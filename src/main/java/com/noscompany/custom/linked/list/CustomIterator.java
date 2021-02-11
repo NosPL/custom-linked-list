@@ -1,6 +1,7 @@
 package com.noscompany.custom.linked.list;
 
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -14,37 +15,21 @@ class CustomIterator<E> implements ListIterator<E> {
         this.index = index;
     }
 
+    @Override
+    public boolean hasNext() {
+        return current != null;
+    }
+
+    public static <T> CustomIterator<T> empty() {
+        return new CustomIterator<>(null, -1);
+    }
+
     public static <T> CustomIterator<T> head(Node<T> head) {
         return new CustomIterator<>(head, -1);
     }
 
     public static <T> CustomIterator<T> tail(Node<T> tail, int indexOfLast) {
         return new CustomIterator<>(tail, indexOfLast);
-    }
-
-    @Override
-    public boolean hasNext() {
-        return current != null;
-    }
-
-    @Override
-    public E next() {
-        E e = current.getElement();
-        current = current.getNextNode();
-        index++;
-        return e;
-    }
-
-    @Override
-    public boolean hasPrevious() {
-        return current.hasPrevious();
-    }
-
-    @Override
-    public E previous() {
-        current = current.getPreviousNode();
-        index--;
-        return current.getElement();
     }
 
     @Override
@@ -73,8 +58,13 @@ class CustomIterator<E> implements ListIterator<E> {
     }
 
     @Override
-    public void set(E e) {
-
+    public E next() {
+        if (current == null)
+            throw new NoSuchElementException();
+        E e = current.getElement();
+        current = current.getNextNode();
+        index++;
+        return e;
     }
 
     @Override
@@ -105,5 +95,28 @@ class CustomIterator<E> implements ListIterator<E> {
     CustomIterator<E> customIterator(int index) {
         iterateAndBreakOn(t -> t.getIndex() == index - 1);
         return this;
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        if (current == null)
+            return false;
+        return current.hasPrevious();
+    }
+
+    @Override
+    public E previous() {
+        if (current == null || current.hasPrevious())
+            throw new NoSuchElementException();
+        index--;
+        E element = current.getElement();
+        current = current.getPreviousNode();
+        return element;
+    }
+
+    @Override
+    public void set(E e) {
+        if (index == -1)
+            throw new IllegalStateException();
     }
 }
