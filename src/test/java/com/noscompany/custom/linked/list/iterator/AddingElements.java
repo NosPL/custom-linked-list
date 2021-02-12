@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AddingElements {
 
     @Test
-    @DisplayName("adding on the beginning should succeed")
+    @DisplayName("adding element at the beginning of the list iterator")
     public void test() {
 //        given that there is iterator with elements "a", "b", "c"
         ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
