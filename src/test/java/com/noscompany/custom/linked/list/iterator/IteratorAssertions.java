@@ -23,7 +23,7 @@ public class IteratorAssertions {
     public static <T> void iterateFromHeadToTailAndCheckStateEveryStep(ListIterator<T> iterator, T... args) {
         int index = 0;
         while (iterator.hasNext()) {
-            assertNextState(
+            assertStateAndDoNext(
                     iterator,
                     (index - 1),
                     index,
@@ -39,7 +39,7 @@ public class IteratorAssertions {
         int index = args.length;
         while (iterator.hasPrevious()) {
             index--;
-            assertPreviousState(
+            assertStateAndDoPrevious(
                     iterator,
                     index,
                     (index + 1),
@@ -49,13 +49,13 @@ public class IteratorAssertions {
         assertEquals(0, index);
     }
 
-    public static <T> void assertNextState(ListIterator<T> iterator, int previousIndex, int nextIndex, T nextElement) {
+    public static <T> void assertStateAndDoNext(ListIterator<T> iterator, int previousIndex, int nextIndex, T nextElement) {
         assertEquals(iterator.previousIndex(), previousIndex);
         assertEquals(iterator.nextIndex(), nextIndex);
         assertEquals(iterator.next(), nextElement);
     }
 
-    public static <T> void assertPreviousState(ListIterator<T> iterator, int previousIndex, int nextIndex, T previousElement) {
+    public static <T> void assertStateAndDoPrevious(ListIterator<T> iterator, int previousIndex, int nextIndex, T previousElement) {
         assertEquals(iterator.previousIndex(), previousIndex);
         assertEquals(iterator.nextIndex(), nextIndex);
         assertEquals(iterator.previous(), previousElement);

@@ -25,8 +25,8 @@ public class SettingElements {
 
         iterator.set("x");
 
-        assertNextState(iterator, 0, 1, "b");
-        assertNextState(iterator, 1, 2, "c");
+        assertStateAndDoNext(iterator, 0, 1, "b");
+        assertStateAndDoNext(iterator, 1, 2, "c");
 
         assertIsAtTheEnd(iterator);
 
