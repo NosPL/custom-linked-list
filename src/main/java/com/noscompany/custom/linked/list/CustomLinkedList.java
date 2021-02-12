@@ -30,7 +30,7 @@ public class CustomLinkedList<T> implements List<T> {
                 head = Node.single(t);
                 tail = head;
             } else {
-                tail = tail.append(t);
+                tail.append(t);
                 tail = tail.getNextNode();
             }
             i++;
@@ -83,7 +83,7 @@ public class CustomLinkedList<T> implements List<T> {
             this.head = Node.single(t);
             this.tail = head;
         } else {
-            tail = tail.append(t);
+            tail.append(t);
         }
         return true;
     }
