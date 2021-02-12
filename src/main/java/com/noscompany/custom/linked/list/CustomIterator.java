@@ -69,7 +69,8 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public void add(E e) {
-
+        current = current.prepend(e);
+        index++;
     }
 
     @Override
@@ -106,12 +107,11 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public E previous() {
-        if (current == null || current.hasPrevious())
+        if (current == null || !current.hasPrevious())
             throw new NoSuchElementException();
         index--;
-        E element = current.getElement();
         current = current.getPreviousNode();
-        return element;
+        return current.getElement();
     }
 
     @Override
