@@ -31,8 +31,9 @@ class Node<T> {
         return element;
     }
 
-    void setElement(T element) {
+    Node<T> setElement(T element) {
         this.element = element;
+        return this;
     }
 
     Node<T> getNextNode() {
@@ -56,19 +57,21 @@ class Node<T> {
         return true;
     }
 
-    void append(T t) {
+    Node<T> append(T t) {
         if (nextNode == null) {
             nextNode = Node.withPrevious(t, this);
         } else {
             nextNode = Node.withPreviousAndNext(t, this, nextNode);
         }
+        return this;
     }
 
-    void prepend(T t) {
+    Node<T> prepend(T t) {
         if (previousNode == null) {
             previousNode = Node.withNext(t, this);
         } else {
             previousNode = Node.withPreviousAndNext(t, previousNode, this);
         }
+        return this;
     }
 }
