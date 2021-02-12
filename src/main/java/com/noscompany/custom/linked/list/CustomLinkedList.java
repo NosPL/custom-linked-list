@@ -174,14 +174,23 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        return CustomIterator.head(head);
+        if (head != null)
+            return CustomIterator.head(head);
+        else
+            return CustomIterator.empty();
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
         validateRange(index);
-        return CustomIterator.head(head)
-                .customIterator(index);
+        CustomIterator<T> iterator = CustomIterator.head(this.head);
+        do {
+            if (iterator.nextIndex() == index)
+                return iterator;
+            else if (iterator.hasNext())
+                iterator.next();
+        } while (iterator.hasNext());
+        throw new IllegalStateException("Should not come till this place");
     }
 
     @Override
