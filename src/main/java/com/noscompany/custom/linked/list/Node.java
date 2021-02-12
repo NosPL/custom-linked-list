@@ -39,16 +39,8 @@ class Node<T> {
         return nextNode;
     }
 
-    void setNextNode(Node<T> nextNode) {
-        this.nextNode = nextNode;
-    }
-
     Node<T> getPreviousNode() {
         return previousNode;
-    }
-
-    void setPreviousNode(Node<T> previousNode) {
-        this.previousNode = previousNode;
     }
 
     boolean hasPrevious() {
@@ -59,43 +51,9 @@ class Node<T> {
         return nextNode != null;
     }
 
-    void removeNextNode() {
-        if (this.hasNext()) {
-            Node<T> nextNode = this.getNextNode();
-            if (nextNode.hasNext())
-                this.nextNode = nextNode.getNextNode();
-        }
-    }
-
-    void removePreviousNode() {
-        if (this.hasNext()) {
-            Node<T> previousNode = this.getPreviousNode();
-            if (previousNode.hasPrevious())
-                this.previousNode = previousNode.getPreviousNode();
-        }
-    }
-
     boolean removeThis() {
-        this.nextNode.setPreviousNode(this.getPreviousNode());
+        this.nextNode.previousNode = this.getPreviousNode();
         return true;
-    }
-
-    Node<T> removeThisAndGetNext() {
-        this.nextNode.setPreviousNode(this.getPreviousNode());
-        return nextNode;
-    }
-
-    Node<T> removeThisAndGetPrevious() {
-        this.nextNode.setPreviousNode(this.getPreviousNode());
-        return previousNode;
-    }
-
-    boolean removeThisIfEquals(Object o) {
-        if (element.equals(o)) {
-            this.nextNode.setPreviousNode(this.getPreviousNode());
-            return true;
-        } else
-            return false;
     }
 
     void append(T t) {
