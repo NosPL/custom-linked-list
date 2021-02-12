@@ -52,4 +52,21 @@ public class IteratorAssertions {
         }
         assertEquals(0, index);
     }
+
+    /**
+     * Method for list iterator that goes through all its elements from head to tail
+     * and back and check its state every step
+     *
+     * @param iterator tested iterator
+     * @param args     arguments to be checked against iterator
+     * @param <T>      type of list iterator and arguments
+     */
+    @SafeVarargs
+    public static <T> void moveFromHeadToTailAndBackAndCheckStateEveryStep(ListIterator<T> iterator, T... args) {
+        assertIsAtTheBeginning(iterator);
+        iterateFromHeadToTailAndCheckStateEveryStep(iterator, args);
+        assertIsAtTheEnd(iterator);
+        iterateFromTailToHeadAndCheckStateEveryStep(iterator, args);
+        assertIsAtTheBeginning(iterator);
+    }
 }
