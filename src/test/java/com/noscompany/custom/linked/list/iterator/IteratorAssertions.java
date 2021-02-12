@@ -7,13 +7,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class IteratorAssertions {
 
-    public static <T> void assertIsAtTheBeginning(ListIterator<T> iterator) {
+    /**
+     * Checks position of iterator (0 means it is at the beginning)
+     *
+     * @param iterator
+     * @param position expected position
+     */
+    public static void assertIsAtPosition(ListIterator iterator, int position) {
+        assertEquals(position, iterator.nextIndex());
+        assertEquals((position - 1), iterator.previousIndex());
+    }
+
+    public static void assertIsAtTheBeginning(ListIterator iterator) {
+        assertEquals(0, iterator.nextIndex());
+        assertEquals(-1, iterator.previousIndex());
         assertFalse(iterator.hasPrevious());
         assertTrue(iterator.hasNext());
         assertThrows(NoSuchElementException.class, iterator::previous);
     }
 
-    public static <T> void assertIsAtTheEnd(ListIterator<T> iterator) {
+    public static void assertIsAtTheEnd(ListIterator iterator) {
         assertFalse(iterator.hasNext());
         assertTrue(iterator.hasPrevious());
         assertThrows(NoSuchElementException.class, iterator::next);
