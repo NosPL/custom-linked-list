@@ -2,51 +2,40 @@ package com.noscompany.custom.linked.list;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 class CustomIterator<E> implements ListIterator<E> {
-    private Node<E> current;
+    private Cursor<E> cursor;
     private int index;
 
-    private CustomIterator(Node<E> current, int index) {
-        this.current = current;
+    private CustomIterator(Cursor<E> cursor, int index) {
+        this.cursor = cursor;
         this.index = index;
+    }
+
+    public static <T> CustomIterator<T> empty() {
+        return new CustomIterator<>(new Empty<>(), 0);
+    }
+
+    public static <T> CustomIterator<T> head(Node<T> head) {
+        Objects.requireNonNull(head);
+        return new CustomIterator<>(new Beginning<>(head), 0);
     }
 
     @Override
     public boolean hasNext() {
-        return current != null;
-    }
-
-    public static <T> CustomIterator<T> empty() {
-        return new CustomIterator<>(null, -1);
-    }
-
-    public static <T> CustomIterator<T> head(Node<T> head) {
-        return new CustomIterator<>(head, -1);
-    }
-
-    public static <T> CustomIterator<T> tail(Node<T> tail, int indexOfLast) {
-        return new CustomIterator<>(tail, indexOfLast);
+        return cursor.hasNext();
     }
 
     @Override
     public int nextIndex() {
-        return index + 1;
+        return index;
     }
 
     @Override
     public int previousIndex() {
-        return index;
-    }
-
-    public Node<E> nextNode() {
-        Node<E> nextNode = current.getNextNode();
-        current = current.getNextNode();
-        index++;
-        return nextNode;
+        return index - 1;
     }
 
     @Override
@@ -56,17 +45,15 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public E next() {
-        if (current == null)
-            throw new NoSuchElementException();
-        E e = current.getElement();
-        current = current.getNextNode();
+        E e = cursor.getNode().getElement();
+        cursor = cursor.moveForward().orElseThrow(NoSuchElementException::new);
         index++;
         return e;
     }
 
     @Override
     public void add(E e) {
-        current = current.prepend(e);
+        cursor = cursor.add(e);
         index++;
     }
 
@@ -74,46 +61,23 @@ class CustomIterator<E> implements ListIterator<E> {
     public void forEachRemaining(Consumer<? super E> action) {
         do {
             action.accept(this.next());
-        } while (current.hasNext());
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public Optional<IteratorEntry<E>> iterateAndBreakOn(Predicate<IteratorEntry<E>> predicate) {
-        while (hasNext()) {
-            IteratorEntry<E> tuple = new IteratorEntry<>(index, nextNode());
-            if (predicate.test(tuple))
-                return Optional.of(tuple);
-        }
-        return Optional.empty();
-    }
-
-    CustomIterator<E> customIterator(int index) {
-        iterateAndBreakOn(t -> t.getIndex() == index - 1);
-        return this;
+        } while (cursor.hasNext());
     }
 
     @Override
     public boolean hasPrevious() {
-        if (current == null)
-            return false;
-        return current.hasPrevious();
+        return cursor.hasPrevious();
     }
 
     @Override
     public E previous() {
-        if (current == null || !current.hasPrevious())
-            throw new NoSuchElementException();
+        cursor = cursor.moveBackward().orElseThrow(NoSuchElementException::new);
         index--;
-        current = current.getPreviousNode();
-        return current.getElement();
+        return cursor.getNode().getElement();
     }
 
     @Override
     public void set(E e) {
-        if (index == -1)
-            throw new IllegalStateException();
+        cursor.set(e);
     }
 }

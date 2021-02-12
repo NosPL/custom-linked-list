@@ -69,4 +69,30 @@ public class IteratorAssertions {
         iterateFromTailToHeadAndCheckStateEveryStep(iterator, args);
         assertIsAtTheBeginning(iterator);
     }
+
+    public static <T> void moveAtTheEnd(ListIterator<T> iterator) {
+        while (iterator.hasNext())
+            iterator.next();
+        assertIsAtTheEnd(iterator);
+    }
+
+    public static <T> void moveAtTheBeginning(ListIterator<T> iterator) {
+        while (iterator.hasPrevious())
+            iterator.previous();
+        assertIsAtTheBeginning(iterator);
+    }
+
+    public static <T> void moveForwardToPosition(ListIterator<T> iterator, int position) {
+        while (iterator.nextIndex() < position)
+            iterator.next();
+        assertPosition(iterator, position);
+    }
+
+    public static <T> void isEmpty(ListIterator<T> iterator) {
+        assertPosition(iterator, 0);
+        assertFalse(iterator.hasPrevious());
+        assertFalse(iterator.hasNext());
+        assertThrows(NoSuchElementException.class, iterator::previous);
+        assertThrows(NoSuchElementException.class, iterator::next);
+    }
 }

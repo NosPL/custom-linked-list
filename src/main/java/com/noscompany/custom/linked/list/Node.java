@@ -1,7 +1,7 @@
 package com.noscompany.custom.linked.list;
 
 class Node<T> {
-    private T element;
+    private final T element;
     private Node<T> previousNode;
     private Node<T> nextNode;
 
@@ -31,11 +31,6 @@ class Node<T> {
         return element;
     }
 
-    Node<T> setElement(T element) {
-        this.element = element;
-        return this;
-    }
-
     Node<T> getNextNode() {
         return nextNode;
     }
@@ -52,26 +47,23 @@ class Node<T> {
         return nextNode != null;
     }
 
-    boolean removeThis() {
-        this.nextNode.previousNode = this.getPreviousNode();
-        return true;
-    }
-
-    Node<T> append(T t) {
+    void append(T t) {
         if (nextNode == null) {
             nextNode = Node.withPrevious(t, this);
         } else {
-            nextNode = Node.withPreviousAndNext(t, this, nextNode);
+            Node<T> newNextNode = Node.withPreviousAndNext(t, this, this.nextNode);
+            this.nextNode.previousNode = newNextNode;
+            this.nextNode = newNextNode;
         }
-        return this;
     }
 
-    Node<T> prepend(T t) {
+    void prepend(T t) {
         if (previousNode == null) {
             previousNode = Node.withNext(t, this);
         } else {
-            previousNode = Node.withPreviousAndNext(t, previousNode, this);
+            Node<T> newPreviousNode = Node.withPreviousAndNext(t, this.previousNode, this);
+            this.previousNode.nextNode = newPreviousNode;
+            this.previousNode = newPreviousNode;
         }
-        return this;
     }
 }
