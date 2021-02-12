@@ -51,10 +51,7 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public void remove() {
-        if (current.hasPrevious())
-            current.removePreviousNode();
-        else
-            throw new IllegalStateException();
+        throw new RuntimeException("not implemented");
     }
 
     @Override
