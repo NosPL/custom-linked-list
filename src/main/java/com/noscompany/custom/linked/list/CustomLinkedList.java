@@ -50,13 +50,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
-        return CustomIterator.head(head)
-                .iterateAndBreakOn(
-                        t -> t.
-                                getNode()
-                                .getElement()
-                                .equals(o))
-                .isPresent();
+        throw new RuntimeException("not implemented");
     }
 
     @Override
@@ -96,15 +90,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
-        return CustomIterator.head(head)
-                .iterateAndBreakOn(
-                        t -> t
-                                .getNode()
-                                .getElement()
-                                .equals(o))
-                .map(IteratorEntry::getNode)
-                .map(Node::removeThis)
-                .orElse(false);
+        throw new RuntimeException("not implemented");
     }
 
     @Override
@@ -141,16 +127,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        return getNode(index).getElement();
-    }
-
-    private Node<T> getNode(int index) {
-        validateRange(index);
-        return CustomIterator
-                .head(head)
-                .iterateAndBreakOn(entry -> entry.getIndex() == index)
-                .map(IteratorEntry::getNode)
-                .orElse(null);
+        throw new RuntimeException("not implemented");
     }
 
     private void validateRange(int index) {
@@ -161,41 +138,24 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public T set(int index, T element) {
         validateRange(index);
-        Node<T> node = getNode(index);
-        T old = node.getElement();
-        node.setElement(element);
-        return old;
+        throw new RuntimeException("not implemented");
     }
 
     @Override
     public void add(int index, T element) {
         validateRange(index);
-        getNode(index)
-                .append(element);
-        size++;
+        throw new RuntimeException("not implemented");
     }
 
     @Override
     public T remove(int index) {
         validateRange(index);
-        Node<T> node = getNode(index);
-        T element = node.getElement();
-        node.removeThis();
-        size--;
-        return element;
+        throw new RuntimeException("not implemented");
     }
 
     @Override
     public int indexOf(Object o) {
-        return CustomIterator.head(head)
-                .iterateAndBreakOn(
-                        t -> t
-                                .getNode()
-                                .getElement()
-                                .equals(o)
-                )
-                .map(IteratorEntry::getIndex)
-                .orElse(-1);
+        throw new RuntimeException("not implemented");
     }
 
     @Override
