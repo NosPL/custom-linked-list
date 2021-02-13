@@ -64,6 +64,6 @@ class Beginning<T> extends Cursor<T> {
     @Override
     protected void validate(Node<T> node) {
         if (node.hasPrevious())
-            throw new IllegalArgumentException("Beginning node cannot have previous node");
+            throw new IllegalArgumentException("Beginning cursor node cannot have previous node");
     }
 }

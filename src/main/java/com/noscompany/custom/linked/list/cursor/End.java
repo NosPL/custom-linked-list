@@ -66,6 +66,6 @@ class End<T> extends Cursor<T> {
     @Override
     protected void validate(Node<T> node) {
         if (node.hasNext())
-            throw new IllegalArgumentException("End node cannot have next node");
+            throw new IllegalArgumentException("End cursor node cannot have next node");
     }
 }

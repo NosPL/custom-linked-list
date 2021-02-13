@@ -83,6 +83,6 @@ class Middle<T> extends Cursor<T> {
     @Override
     protected void validate(Node<T> node) {
         if (node.isSingle())
-            throw new IllegalArgumentException("Middle node must have previous and nex node");
+            throw new IllegalArgumentException("Middle cursor node must have previous and nex node");
     }
 }
