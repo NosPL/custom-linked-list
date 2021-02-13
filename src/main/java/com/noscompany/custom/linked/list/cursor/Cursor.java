@@ -15,9 +15,9 @@ public abstract class Cursor<T> {
 
     public abstract boolean hasPrevious();
 
-    public abstract Cursor<T> moveForward();
+    public abstract Cursor<T> moveToNext();
 
-    public abstract Cursor<T> moveBackward();
+    public abstract Cursor<T> moveToPrevious();
 
     public Node<T> getNode() {
         return node;

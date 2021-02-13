@@ -22,7 +22,7 @@ class Beginning<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveForward() {
+    public Cursor<T> moveToNext() {
         if (node.hasNext())
             return new Middle<>(node.getNextNode(), 1);
         else
@@ -30,7 +30,7 @@ class Beginning<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveBackward() {
+    public Cursor<T> moveToPrevious() {
         Optional.empty().orElseThrow(NoSuchElementException::new);
         return null;
     }

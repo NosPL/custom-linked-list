@@ -23,13 +23,13 @@ class End<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveForward() {
+    public Cursor<T> moveToNext() {
         Optional.empty().orElseThrow(NoSuchElementException::new);
         return null;
     }
 
     @Override
-    public Cursor<T> moveBackward() {
+    public Cursor<T> moveToPrevious() {
         if (node.hasPrevious())
             return new Middle<>(node, (nextIndex - 1));
         else
