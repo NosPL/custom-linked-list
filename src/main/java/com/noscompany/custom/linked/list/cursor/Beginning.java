@@ -1,10 +1,12 @@
-package com.noscompany.custom.linked.list;
+package com.noscompany.custom.linked.list.cursor;
+
+import com.noscompany.custom.linked.list.Node;
 
 import java.util.Optional;
 
-public class Middle<T> extends Cursor<T> {
+public class Beginning<T> extends Cursor<T> {
 
-    public Middle(Node<T> node) {
+    public Beginning(Node<T> node) {
         super(node);
     }
 
@@ -15,7 +17,7 @@ public class Middle<T> extends Cursor<T> {
 
     @Override
     public boolean hasPrevious() {
-        return true;
+        return false;
     }
 
     @Override
@@ -28,11 +30,7 @@ public class Middle<T> extends Cursor<T> {
 
     @Override
     public Optional<Cursor<T>> moveBackward() {
-        Node<T> previousNode = node.getPreviousNode();
-        if (previousNode.hasPrevious())
-            return Optional.of(new Middle<>(previousNode));
-        else
-            return Optional.of(new Beginning<>(previousNode));
+        return Optional.empty();
     }
 
     @Override

@@ -1,4 +1,6 @@
-package com.noscompany.custom.linked.list;
+package com.noscompany.custom.linked.list.cursor;
+
+import com.noscompany.custom.linked.list.Node;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
