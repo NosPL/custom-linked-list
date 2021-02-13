@@ -39,6 +39,7 @@ public class RemovingElements {
         assertEquals("b", iterator.previous());
         assertPosition(iterator, 1);
         iterator.remove();
+        assertPosition(iterator, 1);
         assertContainsOnly(iterator, "a", "c");
     }
 
