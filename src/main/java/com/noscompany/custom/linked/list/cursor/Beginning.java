@@ -47,7 +47,7 @@ class Beginning<T> extends Cursor<T> {
     }
 
     @Override
-    public void remove() {
+    public Cursor<T> remove() {
         throw new RuntimeException("not implemented");
     }
 }

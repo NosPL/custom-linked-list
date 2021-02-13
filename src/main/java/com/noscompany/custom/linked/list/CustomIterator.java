@@ -39,7 +39,7 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public void remove() {
-        throw new RuntimeException("not implemented");
+        cursor = cursor.remove();
     }
 
     @Override

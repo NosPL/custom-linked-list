@@ -43,5 +43,5 @@ public abstract class Cursor<T> {
         return nextIndex;
     }
 
-    public abstract void remove();
+    public abstract Cursor<T> remove();
 }
