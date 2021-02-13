@@ -96,4 +96,8 @@ public class Node<T> {
             previousNode = null;
         }
     }
+
+    public boolean isSingle() {
+        return previousNode == null && nextNode == null;
+    }
 }
