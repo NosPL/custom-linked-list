@@ -9,8 +9,7 @@ import java.util.ListIterator;
 import static com.noscompany.custom.linked.list.iterator.IteratorAssertions.assertContainsOnly;
 import static com.noscompany.custom.linked.list.iterator.IteratorAssertions.assertIsEmpty;
 import static java.util.List.of;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RemovingElements {
 
@@ -45,7 +44,7 @@ public class RemovingElements {
     }
 
     @Test
-    @DisplayName("remove() should crash if neither next() nor previous() have been previously called")
+    @DisplayName("remove() should crash if neither next(), set() nor previous() have been previously called")
     public void test4() {
         ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
         assertThrows(IllegalStateException.class, iterator::remove);
@@ -59,7 +58,16 @@ public class RemovingElements {
         assertThrows(IllegalStateException.class, iterator::remove);
         iterator.previousIndex();
         assertThrows(IllegalStateException.class, iterator::remove);
-        iterator.remove();
-        assertThrows(IllegalStateException.class, iterator::remove);
+    }
+
+    @Test
+    @DisplayName("remove() should delete element set by last set(..) call")
+    public void test5() {
+        ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
+        iterator.next();
+        iterator.next();
+        iterator.set("x");
+        assertDoesNotThrow(iterator::remove);
+        assertContainsOnly(iterator, "a", "c");
     }
 }
