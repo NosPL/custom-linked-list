@@ -23,8 +23,7 @@ public class RemovingElements {
     @DisplayName("remove() should delete element returned by last next() call")
     public void test2() {
         ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
-        String a = iterator.next();
-        assertEquals("a", a);
+        assertEquals("a", iterator.next());
         assertPosition(iterator, 1);
         iterator.remove();
         assertPosition(iterator, 0);
@@ -37,8 +36,8 @@ public class RemovingElements {
         ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
         iterator.next();
         iterator.next();
-        String b = iterator.previous();
-        assertEquals("b", b);
+        assertEquals("b", iterator.previous());
+        assertPosition(iterator, 1);
         iterator.remove();
         assertContainsOnly(iterator, "a", "c");
     }
