@@ -6,9 +6,11 @@ import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.NONE
 
 public abstract class Cursor<T> {
 
-    protected LastOperation lastOperation;
+    enum LastOperation {PREVIOUS, NEXT, NONE, ADD, REMOVE}
 
+    protected LastOperation lastOperation;
     protected Node<T> node;
+
     protected int nextIndex;
 
     public Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
@@ -40,8 +42,6 @@ public abstract class Cursor<T> {
     public static <T> Cursor<T> empty() {
         return new Empty<>(NONE);
     }
-
-    enum LastOperation {PREVIOUS, NEXT, NONE, ADD}
 
     public int previousIndex() {
         return (nextIndex - 1);
