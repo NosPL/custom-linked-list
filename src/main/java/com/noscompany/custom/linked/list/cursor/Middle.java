@@ -51,19 +51,33 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Cursor<T> remove() {
         if (lastOperation == PREVIOUS) {
-            node.removeNext();
-            if (node.hasNext())
-                return new Middle<>(node, (nextIndex - 1), REMOVE);
-            else
-                return new End<>(node, (nextIndex - 1), REMOVE);
+            return removeNext();
         } else if (lastOperation == NEXT) {
-            node.removePrevious();
-            if (node.hasPrevious())
-                return new Middle<>(node, (nextIndex - 1), REMOVE);
-            else
-                return new Beginning<>(node, REMOVE);
+            return removePrevious();
         } else
             throw new IllegalStateException();
+    }
+
+    private Cursor<T> removeNext() {
+        if (node.hasNext()) {
+            node = node.getNextNode();
+            node.removePrevious();
+            return new Middle<>(node, nextIndex, REMOVE);
+        } else {
+            node = node.getNextNode();
+            node.removePrevious();
+            return new End<>(node, nextIndex, REMOVE);
+        }
+    }
+
+    private Cursor<T> removePrevious() {
+        if (node.getPreviousNode().hasPrevious()) {
+            node.removePrevious();
+            return new Middle<>(node, (nextIndex - 1), REMOVE);
+        } else {
+            node.removePrevious();
+            return new Beginning<>(node, REMOVE);
+        }
     }
 
     @Override

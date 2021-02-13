@@ -52,9 +52,12 @@ class End<T> extends Cursor<T> {
     @Override
     public Cursor<T> remove() {
         if (lastOperation == NEXT) {
-            if (node.isSingle()) {
-
-            }
+            if (node.hasPrevious()) {
+                node = node.getPreviousNode();
+                node.removeNext();
+                new End<>(node, (nextIndex - 1), REMOVE);
+            } else
+                return new Empty<>(REMOVE);
         }
 
         throw new IllegalStateException();
