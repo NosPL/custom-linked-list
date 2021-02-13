@@ -13,7 +13,7 @@ public abstract class Cursor<T> {
 
     protected int nextIndex;
 
-    public Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
+    Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
         validate(node);
         this.node = node;
         this.nextIndex = nextIndex;

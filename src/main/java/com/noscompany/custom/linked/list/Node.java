@@ -1,7 +1,7 @@
 package com.noscompany.custom.linked.list;
 
 public class Node<T> {
-    private final T element;
+    private T element;
     private Node<T> previousNode;
     private Node<T> nextNode;
 
@@ -25,6 +25,10 @@ public class Node<T> {
 
     public static <T> Node<T> withPreviousAndNext(T t, Node<T> previous, Node<T> next) {
         return new Node<>(t, previous, next);
+    }
+
+    public void setElement(T element) {
+        this.element = element;
     }
 
     public T getElement() {

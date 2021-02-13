@@ -39,7 +39,9 @@ class Beginning<T> extends Cursor<T> {
 
     @Override
     public void set(T t) {
-
+        if (lastOperation == PREVIOUS)
+            node.setElement(t);
+        else throw new IllegalStateException();
     }
 
     @Override

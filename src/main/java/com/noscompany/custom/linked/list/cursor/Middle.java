@@ -39,7 +39,12 @@ class Middle<T> extends Cursor<T> {
 
     @Override
     public void set(T t) {
-
+        if (lastOperation == NEXT) {
+            node.getPreviousNode().setElement(t);
+        } else if (lastOperation == PREVIOUS) {
+            node.setElement(t);
+        } else
+            throw new IllegalStateException();
     }
 
     @Override
