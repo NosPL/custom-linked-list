@@ -4,12 +4,9 @@ import com.noscompany.custom.linked.list.CustomLinkedList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.ListIterator;
 
-import static com.noscompany.custom.linked.list.iterator.IteratorAssertions.assertContainsOnly;
-import static com.noscompany.custom.linked.list.iterator.IteratorAssertions.assertIsEmpty;
-import static java.util.List.of;
+import static com.noscompany.custom.linked.list.iterator.IteratorAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RemovingElements {
@@ -28,14 +25,16 @@ public class RemovingElements {
         ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
         String a = iterator.next();
         assertEquals("a", a);
+        assertPosition(iterator, 1);
         iterator.remove();
+        assertPosition(iterator, 0);
         assertContainsOnly(iterator, "b", "c");
     }
 
     @Test
     @DisplayName("remove() should delete element returned by last previous() call")
     public void test3() {
-        ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
+        ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
         iterator.next();
         iterator.next();
         String b = iterator.previous();
@@ -47,7 +46,7 @@ public class RemovingElements {
     @Test
     @DisplayName("remove() should crash if neither next(), set() nor previous() have been previously called")
     public void test4() {
-        ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
+        ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
         assertThrows(IllegalStateException.class, iterator::remove);
         iterator.hasNext();
         assertThrows(IllegalStateException.class, iterator::remove);
@@ -64,7 +63,7 @@ public class RemovingElements {
     @Test
     @DisplayName("remove() should delete element set by last set(..) call")
     public void test5() {
-        ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
+        ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
         iterator.next();
         iterator.next();
         iterator.set("x");
