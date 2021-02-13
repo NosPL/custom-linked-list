@@ -95,4 +95,10 @@ public class IteratorAssertions {
         assertThrows(NoSuchElementException.class, iterator::previous);
         assertThrows(NoSuchElementException.class, iterator::next);
     }
+
+    public static <T> void assertIsEmpty(ListIterator<T> iterator) {
+        assertPosition(iterator, 0);
+        assertFalse(iterator.hasNext());
+        assertFalse(iterator.hasPrevious());
+    }
 }
