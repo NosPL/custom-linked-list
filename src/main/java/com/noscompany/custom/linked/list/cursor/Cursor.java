@@ -26,4 +26,12 @@ public abstract class Cursor<T> {
     public abstract void set(T t);
 
     public abstract Cursor<T> add(T t);
+
+    public static <T> Cursor<T> beginning(Node<T> node) {
+        return new Beginning<>(node);
+    }
+
+    public static <T> Cursor<T> empty() {
+        return new Empty<>();
+    }
 }

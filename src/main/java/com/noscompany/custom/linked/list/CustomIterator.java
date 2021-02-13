@@ -1,8 +1,6 @@
 package com.noscompany.custom.linked.list;
 
-import com.noscompany.custom.linked.list.cursor.Beginning;
 import com.noscompany.custom.linked.list.cursor.Cursor;
-import com.noscompany.custom.linked.list.cursor.Empty;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -19,12 +17,12 @@ class CustomIterator<E> implements ListIterator<E> {
     }
 
     public static <T> CustomIterator<T> empty() {
-        return new CustomIterator<>(new Empty<>(), 0);
+        return new CustomIterator<>(Cursor.empty(), 0);
     }
 
     public static <T> CustomIterator<T> head(Node<T> head) {
         Objects.requireNonNull(head);
-        return new CustomIterator<>(new Beginning<>(head), 0);
+        return new CustomIterator<>(Cursor.beginning(head), 0);
     }
 
     @Override
