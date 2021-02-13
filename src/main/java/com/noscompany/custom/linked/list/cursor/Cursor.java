@@ -2,8 +2,6 @@ package com.noscompany.custom.linked.list.cursor;
 
 import com.noscompany.custom.linked.list.Node;
 
-import java.util.Optional;
-
 public abstract class Cursor<T> {
     protected Node<T> node;
     protected int nextIndex;
@@ -17,9 +15,9 @@ public abstract class Cursor<T> {
 
     public abstract boolean hasPrevious();
 
-    public abstract Optional<Cursor<T>> moveForward();
+    public abstract Cursor<T> moveForward();
 
-    public abstract Optional<Cursor<T>> moveBackward();
+    public abstract Cursor<T> moveBackward();
 
     public Node<T> getNode() {
         return node;

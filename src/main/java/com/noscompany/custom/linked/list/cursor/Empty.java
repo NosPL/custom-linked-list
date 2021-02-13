@@ -22,13 +22,15 @@ class Empty<T> extends Cursor<T> {
     }
 
     @Override
-    public Optional<Cursor<T>> moveForward() {
-        return Optional.empty();
+    public Cursor<T> moveForward() {
+        Optional.empty().orElseThrow(NoSuchElementException::new);
+        return null;
     }
 
     @Override
-    public Optional<Cursor<T>> moveBackward() {
-        return Optional.empty();
+    public Cursor<T> moveBackward() {
+        Optional.empty().orElseThrow(NoSuchElementException::new);
+        return null;
     }
 
     @Override

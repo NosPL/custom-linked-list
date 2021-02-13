@@ -3,7 +3,6 @@ package com.noscompany.custom.linked.list;
 import com.noscompany.custom.linked.list.cursor.Cursor;
 
 import java.util.ListIterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -46,7 +45,7 @@ class CustomIterator<E> implements ListIterator<E> {
     @Override
     public E next() {
         E e = cursor.getNode().getElement();
-        cursor = cursor.moveForward().orElseThrow(NoSuchElementException::new);
+        cursor = cursor.moveForward();
         return e;
     }
 
@@ -69,7 +68,7 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public E previous() {
-        cursor = cursor.moveBackward().orElseThrow(NoSuchElementException::new);
+        cursor = cursor.moveBackward();
         return cursor.getNode().getElement();
     }
 

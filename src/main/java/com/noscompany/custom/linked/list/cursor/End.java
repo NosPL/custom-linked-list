@@ -2,6 +2,7 @@ package com.noscompany.custom.linked.list.cursor;
 
 import com.noscompany.custom.linked.list.Node;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
@@ -22,16 +23,17 @@ class End<T> extends Cursor<T> {
     }
 
     @Override
-    public Optional<Cursor<T>> moveForward() {
-        return Optional.empty();
+    public Cursor<T> moveForward() {
+        Optional.empty().orElseThrow(NoSuchElementException::new);
+        return null;
     }
 
     @Override
-    public Optional<Cursor<T>> moveBackward() {
+    public Cursor<T> moveBackward() {
         if (node.hasPrevious())
-            return Optional.of(new Middle<>(node, (nextIndex - 1)));
+            return new Middle<>(node, (nextIndex - 1));
         else
-            return Optional.of(new Beginning<>(node));
+            return new Beginning<>(node);
     }
 
     @Override
