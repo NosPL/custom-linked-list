@@ -51,6 +51,6 @@ class Empty<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> remove() {
-        throw new RuntimeException("not implemented");
+        throw new IllegalStateException();
     }
 }
