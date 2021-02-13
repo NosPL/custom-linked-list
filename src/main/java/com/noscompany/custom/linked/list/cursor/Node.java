@@ -1,6 +1,6 @@
-package com.noscompany.custom.linked.list;
+package com.noscompany.custom.linked.list.cursor;
 
-public class Node<T> {
+class Node<T> {
     private T element;
     private Node<T> previousNode;
     private Node<T> nextNode;
@@ -11,67 +11,70 @@ public class Node<T> {
         this.nextNode = nextNode;
     }
 
-    public static <T> Node<T> single(T t) {
+    static <T> Node<T> single(T t) {
         return new Node<>(t, null, null);
     }
 
-    public static <T> Node<T> withPrevious(T t, Node<T> previous) {
-        return new Node<>(t, previous, null);
+    static <T> Node<T> tail(T t, Node<T> previous) {
+        Node<T> node = new Node<>(t, previous, null);
+        previous.nextNode = node;
+        return node;
     }
 
-    public static <T> Node<T> withNext(T t, Node<T> next) {
-        return new Node<>(t, null, next);
+    static <T> Node<T> head(T t, Node<T> next) {
+        Node<T> node = new Node<>(t, null, next);
+        next.previousNode = node;
+        return node;
     }
 
-    public static <T> Node<T> withPreviousAndNext(T t, Node<T> previous, Node<T> next) {
-        return new Node<>(t, previous, next);
+    static <T> Node<T> intermediate(T t, Node<T> previous, Node<T> next) {
+        Node<T> node = new Node<>(t, previous, next);
+        next.previousNode = node;
+        previous.nextNode = node;
+        return node;
     }
 
-    public void setElement(T element) {
-        this.element = element;
-    }
-
-    public T getElement() {
+    T getElement() {
         return element;
     }
 
-    public Node<T> getNextNode() {
+    void setElement(T element) {
+        this.element = element;
+    }
+
+    Node<T> getNextNode() {
         return nextNode;
     }
 
-    public Node<T> getPreviousNode() {
+    Node<T> getPreviousNode() {
         return previousNode;
     }
 
-    public boolean hasPrevious() {
+    boolean hasPrevious() {
         return previousNode != null;
     }
 
-    public boolean hasNext() {
+    boolean hasNext() {
         return nextNode != null;
     }
 
-    public void append(T t) {
+    void append(T t) {
         if (nextNode == null) {
-            nextNode = Node.withPrevious(t, this);
+            Node.tail(t, this);
         } else {
-            Node<T> newNextNode = Node.withPreviousAndNext(t, this, this.nextNode);
-            this.nextNode.previousNode = newNextNode;
-            this.nextNode = newNextNode;
+            Node.intermediate(t, this, this.nextNode);
         }
     }
 
-    public void prepend(T t) {
+    void prepend(T t) {
         if (previousNode == null) {
-            previousNode = Node.withNext(t, this);
+            Node.head(t, this);
         } else {
-            Node<T> newPreviousNode = Node.withPreviousAndNext(t, this.previousNode, this);
-            this.previousNode.nextNode = newPreviousNode;
-            this.previousNode = newPreviousNode;
+            Node.intermediate(t, this.previousNode, this);
         }
     }
 
-    public void removeNext() {
+    void removeNext() {
         if (nextNode == null)
             return;
         else if (nextNode.hasNext()) {
@@ -85,7 +88,7 @@ public class Node<T> {
         }
     }
 
-    public void removePrevious() {
+    void removePrevious() {
         if (previousNode == null)
             return;
         else if (previousNode.hasPrevious()) {
@@ -104,7 +107,15 @@ public class Node<T> {
         nextNode = null;
     }
 
-    public boolean isSingle() {
+    boolean isSingle() {
         return previousNode == null && nextNode == null;
+    }
+
+    boolean isTail() {
+        return previousNode != null && nextNode == null;
+    }
+
+    boolean isHead() {
+        return previousNode == null && nextNode != null;
     }
 }

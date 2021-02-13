@@ -1,12 +1,10 @@
 package com.noscompany.custom.linked.list.cursor;
 
-import com.noscompany.custom.linked.list.Node;
-
 import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
-class Middle<T> extends Cursor<T> {
+class MiddleCursor<T> extends Cursor<T> {
 
-    public Middle(Node<T> node, int nextIndex, LastOperation lastOperation) {
+    MiddleCursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
         super(node, nextIndex, lastOperation);
     }
 
@@ -23,18 +21,18 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Cursor<T> moveToNext() {
         if (node.hasNext())
-            return new Middle<>(node.getNextNode(), (nextIndex + 1), NEXT);
+            return new MiddleCursor<>(node.getNextNode(), (nextIndex + 1), NEXT);
         else
-            return new End<>(node, (nextIndex + 1), NEXT);
+            return new EndCursor<>(node, (nextIndex + 1), NEXT);
     }
 
     @Override
     public Cursor<T> moveToPrevious() {
         Node<T> previousNode = node.getPreviousNode();
         if (previousNode.hasPrevious())
-            return new Middle<>(previousNode, (nextIndex - 1), PREVIOUS);
+            return new MiddleCursor<>(previousNode, (nextIndex - 1), PREVIOUS);
         else
-            return new Beginning<>(previousNode, PREVIOUS);
+            return new StartCursor<>(previousNode, PREVIOUS);
     }
 
     @Override
@@ -50,7 +48,7 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Cursor<T> add(T t) {
         node.prepend(t);
-        return new Middle<>(node, (nextIndex + 1), ADD);
+        return new MiddleCursor<>(node, (nextIndex + 1), ADD);
     }
 
     @Override
@@ -67,27 +65,27 @@ class Middle<T> extends Cursor<T> {
         if (node.hasNext()) {
             node = node.getNextNode();
             node.removePrevious();
-            return new Middle<>(node, nextIndex, REMOVE);
+            return new MiddleCursor<>(node, nextIndex, REMOVE);
         } else {
             node = node.getNextNode();
             node.removePrevious();
-            return new End<>(node, nextIndex, REMOVE);
+            return new EndCursor<>(node, nextIndex, REMOVE);
         }
     }
 
     private Cursor<T> removePrevious() {
         if (node.getPreviousNode().hasPrevious()) {
             node.removePrevious();
-            return new Middle<>(node, (nextIndex - 1), REMOVE);
+            return new MiddleCursor<>(node, (nextIndex - 1), REMOVE);
         } else {
             node.removePrevious();
-            return new Beginning<>(node, REMOVE);
+            return new StartCursor<>(node, REMOVE);
         }
     }
 
     @Override
     protected void validate(Node<T> node) {
         if (node.isSingle())
-            throw new IllegalArgumentException("Middle cursor node must have previous and nex node");
+            throw new IllegalArgumentException("Middle cursor node cannot be single node");
     }
 }

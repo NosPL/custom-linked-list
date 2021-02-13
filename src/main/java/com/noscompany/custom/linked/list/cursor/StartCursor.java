@@ -1,15 +1,13 @@
 package com.noscompany.custom.linked.list.cursor;
 
-import com.noscompany.custom.linked.list.Node;
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
-class Beginning<T> extends Cursor<T> {
+class StartCursor<T> extends Cursor<T> {
 
-    Beginning(Node<T> node, LastOperation lastOperation) {
+    StartCursor(Node<T> node, LastOperation lastOperation) {
         super(node, 0, lastOperation);
     }
 
@@ -26,9 +24,9 @@ class Beginning<T> extends Cursor<T> {
     @Override
     public Cursor<T> moveToNext() {
         if (node.hasNext())
-            return new Middle<>(node.getNextNode(), 1, NEXT);
+            return new MiddleCursor<>(node.getNextNode(), 1, NEXT);
         else
-            return new End<>(node, 1, NEXT);
+            return new EndCursor<>(node, 1, NEXT);
     }
 
     @Override
@@ -47,7 +45,7 @@ class Beginning<T> extends Cursor<T> {
     @Override
     public Cursor<T> add(T t) {
         node.prepend(t);
-        return new Middle<>(node, 1, ADD);
+        return new MiddleCursor<>(node, 1, ADD);
     }
 
     @Override
@@ -56,9 +54,9 @@ class Beginning<T> extends Cursor<T> {
             if (node.hasNext()) {
                 node = node.getNextNode();
                 node.removePrevious();
-                return new Beginning<>(node, REMOVE);
+                return new StartCursor<>(node, REMOVE);
             } else
-                return new Empty<>(REMOVE);
+                return new EmptyCursor<>(REMOVE);
         } else
             throw new IllegalStateException();
     }
