@@ -66,4 +66,34 @@ public class Node<T> {
             this.previousNode = newPreviousNode;
         }
     }
+
+    public void removeNext() {
+        if (nextNode == null)
+            return;
+        else if (nextNode.hasNext()) {
+            Node<T> oldNextNode = nextNode;
+            nextNode = nextNode.getNextNode();
+            nextNode.previousNode = this;
+            oldNextNode.previousNode = null;
+            oldNextNode.nextNode = null;
+        } else {
+            nextNode.previousNode = null;
+            nextNode = null;
+        }
+    }
+
+    public void removePrevious() {
+        if (previousNode == null)
+            return;
+        else if (previousNode.hasPrevious()) {
+            Node<T> oldPreviousNode = previousNode;
+            previousNode = previousNode.getPreviousNode();
+            previousNode.nextNode = this;
+            oldPreviousNode.nextNode = null;
+            oldPreviousNode.previousNode = null;
+        } else {
+            previousNode.nextNode = null;
+            previousNode = null;
+        }
+    }
 }
