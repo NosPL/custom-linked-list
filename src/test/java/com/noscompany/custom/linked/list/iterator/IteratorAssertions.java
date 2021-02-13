@@ -101,4 +101,18 @@ public class IteratorAssertions {
         assertFalse(iterator.hasNext());
         assertFalse(iterator.hasPrevious());
     }
+
+    /**
+     * It checks if the iterator contains only given arguments in the specified order.
+     * After method execution iterators cursor is at the beginning.
+     *
+     * @param iterator tested iterator
+     * @param args     expected arguments in iterator
+     * @param <T>      arguments and iterator type
+     */
+    @SafeVarargs
+    public static <T> void assertContainsOnly(ListIterator<T> iterator, T... args) {
+        moveAtTheEnd(iterator);
+        iterateFromTailToHeadAndCheckStateEveryStep(iterator, args);
+    }
 }
