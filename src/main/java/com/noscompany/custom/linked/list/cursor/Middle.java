@@ -2,10 +2,12 @@ package com.noscompany.custom.linked.list.cursor;
 
 import com.noscompany.custom.linked.list.Node;
 
+import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
+
 class Middle<T> extends Cursor<T> {
 
-    public Middle(Node<T> node, int nextIndex) {
-        super(node, nextIndex);
+    public Middle(Node<T> node, int nextIndex, LastOperation lastOperation) {
+        super(node, nextIndex, lastOperation);
     }
 
     @Override
@@ -21,18 +23,18 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Cursor<T> moveToNext() {
         if (node.hasNext())
-            return new Middle<>(node.getNextNode(), (nextIndex + 1));
+            return new Middle<>(node.getNextNode(), (nextIndex + 1), NEXT);
         else
-            return new End<>(node, (nextIndex + 1));
+            return new End<>(node, (nextIndex + 1), NEXT);
     }
 
     @Override
     public Cursor<T> moveToPrevious() {
         Node<T> previousNode = node.getPreviousNode();
         if (previousNode.hasPrevious())
-            return new Middle<>(previousNode, (nextIndex - 1));
+            return new Middle<>(previousNode, (nextIndex - 1), PREVIOUS);
         else
-            return new Beginning<>(previousNode);
+            return new Beginning<>(previousNode, PREVIOUS);
     }
 
     @Override
@@ -43,7 +45,7 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Cursor<T> add(T t) {
         node.prepend(t);
-        return new Middle<>(node, (nextIndex + 1));
+        return new Middle<>(node, (nextIndex + 1), ADD);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class RemovingElements {
     @Test
     @DisplayName("remove() should delete element returned by last next() call")
     public void test2() {
-        ListIterator<String> iterator = new ArrayList<>(of("a", "b", "c")).listIterator();
+        ListIterator<String> iterator = CustomLinkedList.of("a", "b", "c").listIterator();
         String a = iterator.next();
         assertEquals("a", a);
         iterator.remove();

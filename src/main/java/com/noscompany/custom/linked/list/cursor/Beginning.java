@@ -5,10 +5,13 @@ import com.noscompany.custom.linked.list.Node;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.ADD;
+import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.NEXT;
+
 class Beginning<T> extends Cursor<T> {
 
-    Beginning(Node<T> node) {
-        super(node, 0);
+    Beginning(Node<T> node, LastOperation lastOperation) {
+        super(node, 0, lastOperation);
     }
 
     @Override
@@ -24,9 +27,9 @@ class Beginning<T> extends Cursor<T> {
     @Override
     public Cursor<T> moveToNext() {
         if (node.hasNext())
-            return new Middle<>(node.getNextNode(), 1);
+            return new Middle<>(node.getNextNode(), 1, NEXT);
         else
-            return new End<>(node, 1);
+            return new End<>(node, 1, NEXT);
     }
 
     @Override
@@ -43,7 +46,7 @@ class Beginning<T> extends Cursor<T> {
     @Override
     public Cursor<T> add(T t) {
         node.prepend(t);
-        return new Middle<>(node, 1);
+        return new Middle<>(node, 1, ADD);
     }
 
     @Override

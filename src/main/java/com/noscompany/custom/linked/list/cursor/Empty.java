@@ -5,10 +5,12 @@ import com.noscompany.custom.linked.list.Node;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.ADD;
+
 class Empty<T> extends Cursor<T> {
 
-    Empty() {
-        super(null, 0);
+    Empty(LastOperation lastOperation) {
+        super(null, 0, lastOperation);
     }
 
     @Override
@@ -46,7 +48,7 @@ class Empty<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> add(T t) {
-        return new End<>(Node.single(t), 1);
+        return new End<>(Node.single(t), 1, ADD);
     }
 
     @Override
