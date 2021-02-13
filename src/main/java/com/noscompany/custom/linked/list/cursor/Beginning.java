@@ -53,4 +53,10 @@ class Beginning<T> extends Cursor<T> {
     public Cursor<T> remove() {
         throw new RuntimeException("not implemented");
     }
+
+    @Override
+    protected void validate(Node<T> node) {
+        if (node.hasPrevious())
+            throw new IllegalArgumentException("Beginning node cannot have previous node");
+    }
 }

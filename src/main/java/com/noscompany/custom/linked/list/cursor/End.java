@@ -5,8 +5,7 @@ import com.noscompany.custom.linked.list.Node;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.ADD;
-import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.PREVIOUS;
+import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
 
 class End<T> extends Cursor<T> {
@@ -52,6 +51,18 @@ class End<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> remove() {
-        throw new RuntimeException("not implemented");
+        if (lastOperation == NEXT) {
+            if (node.isSingle()) {
+
+            }
+        }
+
+        throw new IllegalStateException();
+    }
+
+    @Override
+    protected void validate(Node<T> node) {
+        if (node.hasNext())
+            throw new IllegalArgumentException("End node cannot have next node");
     }
 }

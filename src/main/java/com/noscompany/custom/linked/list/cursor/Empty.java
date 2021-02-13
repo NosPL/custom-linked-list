@@ -55,4 +55,8 @@ class Empty<T> extends Cursor<T> {
     public Cursor<T> remove() {
         throw new IllegalStateException();
     }
+
+    @Override
+    protected void validate(Node<T> node) {
+    }
 }

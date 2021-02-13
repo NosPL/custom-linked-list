@@ -50,6 +50,25 @@ class Middle<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> remove() {
-        throw new RuntimeException("not implemented");
+        if (lastOperation == PREVIOUS) {
+            node.removeNext();
+            if (node.hasNext())
+                return new Middle<>(node, (nextIndex - 1), REMOVE);
+            else
+                return new End<>(node, (nextIndex - 1), REMOVE);
+        } else if (lastOperation == NEXT) {
+            node.removePrevious();
+            if (node.hasPrevious())
+                return new Middle<>(node, (nextIndex - 1), REMOVE);
+            else
+                return new Beginning<>(node, REMOVE);
+        } else
+            throw new IllegalStateException();
+    }
+
+    @Override
+    protected void validate(Node<T> node) {
+        if (!node.hasNext() || !hasPrevious())
+            throw new IllegalArgumentException("Middle node must have previous and nex node");
     }
 }
