@@ -46,4 +46,9 @@ class End<T> extends Cursor<T> {
         node.append(t);
         return new End<>(node.getNextNode(), (nextIndex + 1));
     }
+
+    @Override
+    public void remove() {
+        throw new RuntimeException("not implemented");
+    }
 }

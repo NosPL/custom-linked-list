@@ -48,4 +48,9 @@ class Empty<T> extends Cursor<T> {
     public Cursor<T> add(T t) {
         return new End<>(Node.single(t), 1);
     }
+
+    @Override
+    public void remove() {
+        throw new RuntimeException("not implemented");
+    }
 }

@@ -45,4 +45,9 @@ class Middle<T> extends Cursor<T> {
         node.prepend(t);
         return new Middle<>(node, (nextIndex + 1));
     }
+
+    @Override
+    public void remove() {
+        throw new RuntimeException("not implemented");
+    }
 }
