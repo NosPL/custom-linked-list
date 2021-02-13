@@ -9,20 +9,18 @@ import java.util.function.Consumer;
 
 class CustomIterator<E> implements ListIterator<E> {
     private Cursor<E> cursor;
-    private int index;
 
-    private CustomIterator(Cursor<E> cursor, int index) {
+    public CustomIterator(Cursor<E> cursor) {
         this.cursor = cursor;
-        this.index = index;
     }
 
     public static <T> CustomIterator<T> empty() {
-        return new CustomIterator<>(Cursor.empty(), 0);
+        return new CustomIterator<>(Cursor.empty());
     }
 
     public static <T> CustomIterator<T> head(Node<T> head) {
         Objects.requireNonNull(head);
-        return new CustomIterator<>(Cursor.beginning(head), 0);
+        return new CustomIterator<>(Cursor.beginning(head));
     }
 
     @Override
@@ -32,12 +30,12 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public int nextIndex() {
-        return index;
+        return cursor.nextIndex();
     }
 
     @Override
     public int previousIndex() {
-        return index - 1;
+        return cursor.previousIndex();
     }
 
     @Override
@@ -49,14 +47,12 @@ class CustomIterator<E> implements ListIterator<E> {
     public E next() {
         E e = cursor.getNode().getElement();
         cursor = cursor.moveForward().orElseThrow(NoSuchElementException::new);
-        index++;
         return e;
     }
 
     @Override
     public void add(E e) {
         cursor = cursor.add(e);
-        index++;
     }
 
     @Override
@@ -74,7 +70,6 @@ class CustomIterator<E> implements ListIterator<E> {
     @Override
     public E previous() {
         cursor = cursor.moveBackward().orElseThrow(NoSuchElementException::new);
-        index--;
         return cursor.getNode().getElement();
     }
 

@@ -6,9 +6,11 @@ import java.util.Optional;
 
 public abstract class Cursor<T> {
     protected Node<T> node;
+    protected int nextIndex;
 
-    public Cursor(Node<T> node) {
+    public Cursor(Node<T> node, int nextIndex) {
         this.node = node;
+        this.nextIndex = nextIndex;
     }
 
     public abstract boolean hasNext();
@@ -33,5 +35,13 @@ public abstract class Cursor<T> {
 
     public static <T> Cursor<T> empty() {
         return new Empty<>();
+    }
+
+    public int previousIndex() {
+        return (nextIndex - 1);
+    }
+
+    public int nextIndex() {
+        return nextIndex;
     }
 }

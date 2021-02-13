@@ -6,8 +6,9 @@ import java.util.Optional;
 
 
 class End<T> extends Cursor<T> {
-    End(Node<T> node) {
-        super(node);
+
+    public End(Node<T> node, int nextIndex) {
+        super(node, nextIndex);
     }
 
     @Override
@@ -28,7 +29,7 @@ class End<T> extends Cursor<T> {
     @Override
     public Optional<Cursor<T>> moveBackward() {
         if (node.hasPrevious())
-            return Optional.of(new Middle<>(node));
+            return Optional.of(new Middle<>(node, (nextIndex - 1)));
         else
             return Optional.of(new Beginning<>(node));
     }
@@ -41,6 +42,6 @@ class End<T> extends Cursor<T> {
     @Override
     public Cursor<T> add(T t) {
         node.append(t);
-        return new End<>(node.getNextNode());
+        return new End<>(node.getNextNode(), (nextIndex + 1));
     }
 }

@@ -1,5 +1,6 @@
 package com.noscompany.custom.linked.list.iterator;
 
+import com.noscompany.custom.linked.list.CustomLinkedList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ public class RemovingElements {
     @Test
     @DisplayName("remove() on empty iterator should crash")
     public void test() {
-        ListIterator<Object> iterator = new ArrayList<>().listIterator();
+        ListIterator<Object> iterator = CustomLinkedList.empty().listIterator();
         assertIsEmpty(iterator);
         assertThrows(IllegalStateException.class, iterator::remove);
     }

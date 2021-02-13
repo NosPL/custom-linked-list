@@ -8,7 +8,7 @@ import java.util.Optional;
 class Empty<T> extends Cursor<T> {
 
     Empty() {
-        super(null);
+        super(null, 0);
     }
 
     @Override
@@ -44,8 +44,6 @@ class Empty<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> add(T t) {
-        return new End<>(Node.single(t));
+        return new End<>(Node.single(t), 1);
     }
-
-
 }

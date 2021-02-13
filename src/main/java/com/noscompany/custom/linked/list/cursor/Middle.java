@@ -6,8 +6,8 @@ import java.util.Optional;
 
 class Middle<T> extends Cursor<T> {
 
-    Middle(Node<T> node) {
-        super(node);
+    public Middle(Node<T> node, int nextIndex) {
+        super(node, nextIndex);
     }
 
     @Override
@@ -23,16 +23,16 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Optional<Cursor<T>> moveForward() {
         if (node.hasNext())
-            return Optional.of(new Middle<>(node.getNextNode()));
+            return Optional.of(new Middle<>(node.getNextNode(), (nextIndex + 1)));
         else
-            return Optional.of(new End<>(node));
+            return Optional.of(new End<>(node, (nextIndex + 1)));
     }
 
     @Override
     public Optional<Cursor<T>> moveBackward() {
         Node<T> previousNode = node.getPreviousNode();
         if (previousNode.hasPrevious())
-            return Optional.of(new Middle<>(previousNode));
+            return Optional.of(new Middle<>(previousNode, (nextIndex - 1)));
         else
             return Optional.of(new Beginning<>(previousNode));
     }
@@ -45,6 +45,6 @@ class Middle<T> extends Cursor<T> {
     @Override
     public Cursor<T> add(T t) {
         node.prepend(t);
-        return new Middle<>(node);
+        return new Middle<>(node, (nextIndex + 1));
     }
 }
