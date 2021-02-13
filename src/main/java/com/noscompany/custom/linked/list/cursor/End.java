@@ -5,8 +5,8 @@ import com.noscompany.custom.linked.list.Node;
 import java.util.Optional;
 
 
-public class End<T> extends Cursor<T> {
-    public End(Node<T> node) {
+class End<T> extends Cursor<T> {
+    End(Node<T> node) {
         super(node);
     }
 

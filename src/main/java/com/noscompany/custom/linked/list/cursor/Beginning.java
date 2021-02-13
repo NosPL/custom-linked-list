@@ -4,9 +4,9 @@ import com.noscompany.custom.linked.list.Node;
 
 import java.util.Optional;
 
-public class Beginning<T> extends Cursor<T> {
+class Beginning<T> extends Cursor<T> {
 
-    public Beginning(Node<T> node) {
+    Beginning(Node<T> node) {
         super(node);
     }
 

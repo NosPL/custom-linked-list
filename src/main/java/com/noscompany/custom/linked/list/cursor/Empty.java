@@ -5,9 +5,9 @@ import com.noscompany.custom.linked.list.Node;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class Empty<T> extends Cursor<T> {
+class Empty<T> extends Cursor<T> {
 
-    public Empty() {
+    Empty() {
         super(null);
     }
 

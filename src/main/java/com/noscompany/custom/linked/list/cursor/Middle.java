@@ -4,9 +4,9 @@ import com.noscompany.custom.linked.list.Node;
 
 import java.util.Optional;
 
-public class Middle<T> extends Cursor<T> {
+class Middle<T> extends Cursor<T> {
 
-    public Middle(Node<T> node) {
+    Middle(Node<T> node) {
         super(node);
     }
 
