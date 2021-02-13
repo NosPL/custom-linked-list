@@ -14,6 +14,7 @@ public abstract class Cursor<T> {
     protected int nextIndex;
 
     public Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
+        validate(node);
         this.node = node;
         this.nextIndex = nextIndex;
         this.lastOperation = lastOperation;
@@ -52,4 +53,6 @@ public abstract class Cursor<T> {
     }
 
     public abstract Cursor<T> remove();
+
+    protected abstract void validate(Node<T> node);
 }
