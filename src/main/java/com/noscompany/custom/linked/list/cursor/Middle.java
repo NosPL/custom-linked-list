@@ -6,7 +6,7 @@ import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
 class Middle<T> extends Cursor<T> {
 
-    public Middle(Node<T> node, int nextIndex, LastOperation lastOperation) {
+    Middle(Node<T> node, int nextIndex, LastOperation lastOperation) {
         super(node, nextIndex, lastOperation);
     }
 
@@ -88,6 +88,6 @@ class Middle<T> extends Cursor<T> {
     @Override
     protected void validate(Node<T> node) {
         if (node.isSingle())
-            throw new IllegalArgumentException("Middle cursor node must have previous and nex node");
+            throw new IllegalArgumentException("Middle cursor node cannot be single node");
     }
 }

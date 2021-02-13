@@ -10,7 +10,7 @@ import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
 class End<T> extends Cursor<T> {
 
-    public End(Node<T> node, int nextIndex, LastOperation lastOperation) {
+    End(Node<T> node, int nextIndex, LastOperation lastOperation) {
         super(node, nextIndex, lastOperation);
     }
 
@@ -62,7 +62,6 @@ class End<T> extends Cursor<T> {
             } else
                 return new Empty<>(REMOVE);
         }
-
         throw new IllegalStateException();
     }
 

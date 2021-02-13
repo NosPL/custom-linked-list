@@ -10,7 +10,6 @@ public abstract class Cursor<T> {
 
     protected LastOperation lastOperation;
     protected Node<T> node;
-
     protected int nextIndex;
 
     Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
@@ -22,6 +21,10 @@ public abstract class Cursor<T> {
 
     public static <T> Cursor<T> beginning(Node<T> node) {
         return new Beginning<>(node, NONE);
+    }
+
+    public static <T> Cursor<T> empty() {
+        return new Empty<>(NONE);
     }
 
     public abstract boolean hasNext();
@@ -39,10 +42,6 @@ public abstract class Cursor<T> {
     public abstract void set(T t);
 
     public abstract Cursor<T> add(T t);
-
-    public static <T> Cursor<T> empty() {
-        return new Empty<>(NONE);
-    }
 
     public int previousIndex() {
         return (nextIndex - 1);
