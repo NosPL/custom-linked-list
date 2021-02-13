@@ -56,9 +56,8 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public void forEachRemaining(Consumer<? super E> action) {
-        do {
+        while (cursor.hasNext())
             action.accept(this.next());
-        } while (cursor.hasNext());
     }
 
     @Override
