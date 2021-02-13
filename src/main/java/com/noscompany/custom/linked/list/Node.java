@@ -74,8 +74,7 @@ public class Node<T> {
             Node<T> oldNextNode = nextNode;
             nextNode = nextNode.getNextNode();
             nextNode.previousNode = this;
-            oldNextNode.previousNode = null;
-            oldNextNode.nextNode = null;
+            oldNextNode.nullifyNeighbours();
         } else {
             nextNode.previousNode = null;
             nextNode = null;
@@ -89,12 +88,16 @@ public class Node<T> {
             Node<T> oldPreviousNode = previousNode;
             previousNode = previousNode.getPreviousNode();
             previousNode.nextNode = this;
-            oldPreviousNode.nextNode = null;
-            oldPreviousNode.previousNode = null;
+            oldPreviousNode.nullifyNeighbours();
         } else {
             previousNode.nextNode = null;
             previousNode = null;
         }
+    }
+
+    private void nullifyNeighbours() {
+        previousNode = null;
+        nextNode = null;
     }
 
     public boolean isSingle() {
