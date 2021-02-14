@@ -21,10 +21,6 @@ public abstract class Cursor<T> {
         return new EmptyCursor<>(NONE);
     }
 
-    public static <T> Cursor<T> empty() {
-        return new Empty<>(NONE);
-    }
-
     public abstract boolean hasNext();
 
     public abstract boolean hasPrevious();
