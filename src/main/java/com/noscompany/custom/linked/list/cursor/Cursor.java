@@ -1,26 +1,24 @@
 package com.noscompany.custom.linked.list.cursor;
 
-import com.noscompany.custom.linked.list.Node;
-
 import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.NONE;
 
 public abstract class Cursor<T> {
 
-    enum LastOperation {PREVIOUS, NEXT, NONE, ADD, REMOVE}
+    protected enum LastOperation {PREVIOUS, NEXT, NONE, ADD, REMOVE}
 
     protected LastOperation lastOperation;
     protected Node<T> node;
     protected int nextIndex;
 
-    Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
+    protected Cursor(Node<T> node, int nextIndex, LastOperation lastOperation) {
         validate(node);
         this.node = node;
         this.nextIndex = nextIndex;
         this.lastOperation = lastOperation;
     }
 
-    public static <T> Cursor<T> beginning(Node<T> node) {
-        return new Beginning<>(node, NONE);
+    public static <T> Cursor<T> empty() {
+        return new EmptyCursor<>(NONE);
     }
 
     public static <T> Cursor<T> empty() {
@@ -35,8 +33,8 @@ public abstract class Cursor<T> {
 
     public abstract Cursor<T> moveToPrevious();
 
-    public Node<T> getNode() {
-        return node;
+    public T getElement() {
+        return node.getElement();
     }
 
     public abstract void set(T t);
@@ -54,4 +52,8 @@ public abstract class Cursor<T> {
     public abstract Cursor<T> remove();
 
     protected abstract void validate(Node<T> node);
+
+    public void resetLastOperation() {
+        lastOperation = NONE;
+    }
 }

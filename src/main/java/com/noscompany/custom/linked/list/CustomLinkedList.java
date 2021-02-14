@@ -1,46 +1,31 @@
 package com.noscompany.custom.linked.list;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class CustomLinkedList<T> implements List<T> {
-    private Node<T> head;
-    private Node<T> tail;
-    private int size;
+    private CustomIterator<T> customIterator;
 
-    public CustomLinkedList(Node<T> head, Node<T> tail, int size) {
-        this.head = head;
-        this.tail = tail;
-        this.size = size;
+    private CustomLinkedList(CustomIterator<T> customIterator) {
+        this.customIterator = customIterator;
     }
 
     public static <T> CustomLinkedList<T> empty() {
-        return new CustomLinkedList<>(null, null, 0);
+        return new CustomLinkedList<>(CustomIterator.empty());
     }
 
     @SafeVarargs
     public static <T> CustomLinkedList<T> of(T... elements) {
-        Node<T> head = null;
-        Node<T> tail = null;
-        int i = 0;
+        CustomIterator<T> iterator = CustomIterator.empty();
         for (T t : elements) {
-            if (i == 0) {
-                head = Node.single(t);
-                tail = head;
-            } else {
-                tail.append(t);
-                tail = tail.getNextNode();
-            }
-            i++;
+            Objects.requireNonNull(t);
+            iterator.add(t);
         }
-        return new CustomLinkedList<>(head, tail, i);
+        return new CustomLinkedList<>(iterator);
     }
 
     @Override
     public int size() {
-        return size;
+        return customIterator.size();
     }
 
     @Override
@@ -50,165 +35,277 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
-        throw new RuntimeException("not implemented");
+        Objects.requireNonNull(o);
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(o))
+                return true;
+        }
+        return false;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return CustomIterator.head(head);
+        return listIterator();
     }
 
     @Override
     public Object[] toArray() {
         if (this.isEmpty())
             return new Object[0];
-        int thisSize = this.size();
-        Object[] objects = new Object[thisSize];
-        Node<T> next = head;
-        for (int i = 0; i < thisSize; i++) {
-            objects[0] = next.getElement();
-            next = next.getNextNode();
-        }
+        ListIterator<T> iterator = listIterator();
+        Object[] objects = new Object[this.size()];
+        while (iterator.hasNext())
+            objects[iterator.nextIndex()] = iterator.next();
         return objects;
     }
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-        return null;
+        Objects.requireNonNull(a);
+        ListIterator<T> iterator = listIterator();
+        a = (size() > a.length) ? (T1[]) new Object[size()] : a;
+        int i = 0;
+        try {
+            while (iterator.hasNext())
+                a[i++] = (T1) iterator.next();
+        } catch (Exception c) {
+            throw new ArrayStoreException();
+        }
+        if (a.length > size())
+            a[size()] = null;
+        return a;
     }
+
 
     @Override
     public boolean add(T t) {
-        if (this.isEmpty()) {
-            this.head = Node.single(t);
-            this.tail = head;
-        } else {
-            tail.append(t);
-        }
+        customIterator.moveAtTheEnd();
+        customIterator.add(t);
         return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        throw new RuntimeException("not implemented");
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(o)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        checkForNulls(c);
+        int containCount = 0;
+        for (Object o : c) {
+            if (this.contains(o))
+                containCount++;
+        }
+        return containCount == c.size();
     }
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        checkForNulls(c);
+        customIterator.moveAtTheEnd();
+        for (T t : c) {
+            customIterator.add(t);
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
+        checkForNulls(c);
+        validateRange(index);
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.nextIndex() == index) {
+                for (T t : c)
+                    iterator.add(t);
+            }
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        checkForNulls(c);
+        boolean changed = false;
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            inner:
+            for (Object o : c) {
+                if (next.equals(o)) {
+                    iterator.remove();
+                    changed = true;
+                    break inner;
+                }
+            }
+        }
+        return changed;
+    }
+
+    private void checkForNulls(Collection<?> c) {
+        Objects.requireNonNull(c);
+        for (Object o : c)
+            Objects.requireNonNull(o);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        checkForNulls(c);
+        boolean changed = false;
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            if (!c.contains(next)) {
+                iterator.remove();
+                changed = true;
+            }
+        }
+        return changed;
     }
 
     @Override
     public void clear() {
-        head = null;
-        tail = null;
-        size = 0;
+        customIterator = CustomIterator.empty();
     }
 
     @Override
     public T get(int index) {
-        throw new RuntimeException("not implemented");
+        validateRange(index);
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.nextIndex() == index)
+                return iterator.next();
+            else
+                iterator.next();
+        }
+        throw new RuntimeException("did not found element for index: " + index);
     }
 
     private void validateRange(int index) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= size())
             throw new IndexOutOfBoundsException();
     }
 
     @Override
     public T set(int index, T element) {
+        Objects.requireNonNull(element);
         validateRange(index);
-        throw new RuntimeException("not implemented");
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            if (iterator.previousIndex() == index) {
+                iterator.set(element);
+                return next;
+            }
+        }
+        throw new RuntimeException("did not find element with index: " + index);
     }
 
     @Override
     public void add(int index, T element) {
+        Objects.requireNonNull(element);
         validateRange(index);
-        throw new RuntimeException("not implemented");
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            if (iterator.nextIndex() == index) {
+                iterator.add(element);
+            }
+        }
     }
 
     @Override
     public T remove(int index) {
         validateRange(index);
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            if (iterator.previousIndex() == index) {
+                iterator.remove();
+                return next;
+            }
+        }
         throw new RuntimeException("not implemented");
     }
 
     @Override
     public int indexOf(Object o) {
-        throw new RuntimeException("not implemented");
+        Objects.requireNonNull(o);
+        ListIterator<T> iterator = listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(o))
+                return iterator.previousIndex();
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        if (this.isEmpty())
-            return -1;
-        Node<T> current = tail;
-        int index = size - 1;
-        do {
-            if (current.getElement().equals(o))
-                return index;
-            index--;
-        } while (current.hasPrevious());
-        return index;
+        Objects.requireNonNull(o);
+        customIterator.moveAtTheEnd();
+        while (customIterator.hasPrevious())
+            if (customIterator.previous().equals(o))
+                return customIterator.nextIndex();
+        return -1;
     }
 
     @Override
     public ListIterator<T> listIterator() {
-        if (head != null)
-            return CustomIterator.head(head);
-        else
-            return CustomIterator.empty();
+        customIterator.moveAtTheBeginning();
+        customIterator.resetLastOperation();
+        return customIterator;
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
         validateRange(index);
-        CustomIterator<T> iterator = CustomIterator.head(this.head);
-        do {
-            if (iterator.nextIndex() == index)
-                return iterator;
-            else if (iterator.hasNext())
-                iterator.next();
-        } while (iterator.hasNext());
-        throw new IllegalStateException("Should not come till this place");
+        customIterator.moveAtTheBeginning();
+        while (customIterator.hasNext()) {
+            if (customIterator.nextIndex() == index) {
+                customIterator.resetLastOperation();
+                return customIterator;
+            }
+            customIterator.next();
+        }
+        throw new RuntimeException("Could not set iterator at position: " + index);
     }
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        validateRange(fromIndex);
+        validateRange(toIndex);
+        ListIterator<T> iterator = listIterator();
+        CustomLinkedList<T> result = CustomLinkedList.empty();
+        while (iterator.hasNext()) {
+            int index = iterator.nextIndex();
+            if (index >= fromIndex && index < toIndex)
+                result.add(iterator.next());
+        }
+        return result;
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder().append("CustomLinkedList = [");
-        CustomIterator<T> iterator = CustomIterator.head(head);
-        while (iterator.hasNext()) {
-            stringBuilder.append(iterator.next());
-            if (iterator.hasNext()) {
+        customIterator.moveAtTheBeginning();
+        while (customIterator.hasNext()) {
+            stringBuilder.append(customIterator.next());
+            if (customIterator.hasNext())
                 stringBuilder.append(", ");
-            }
         }
         stringBuilder.append("]");
+        customIterator.moveAtTheBeginning();
+        customIterator.resetLastOperation();
         return stringBuilder.toString();
     }
 }

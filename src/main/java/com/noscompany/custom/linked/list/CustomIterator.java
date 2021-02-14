@@ -3,23 +3,19 @@ package com.noscompany.custom.linked.list;
 import com.noscompany.custom.linked.list.cursor.Cursor;
 
 import java.util.ListIterator;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 class CustomIterator<E> implements ListIterator<E> {
     private Cursor<E> cursor;
+    private int size;
 
-    public CustomIterator(Cursor<E> cursor) {
+    private CustomIterator(Cursor<E> cursor, int size) {
         this.cursor = cursor;
+        this.size = size;
     }
 
     public static <T> CustomIterator<T> empty() {
-        return new CustomIterator<>(Cursor.empty());
-    }
-
-    public static <T> CustomIterator<T> head(Node<T> head) {
-        Objects.requireNonNull(head);
-        return new CustomIterator<>(Cursor.beginning(head));
+        return new CustomIterator<>(Cursor.empty(), 0);
     }
 
     @Override
@@ -40,11 +36,12 @@ class CustomIterator<E> implements ListIterator<E> {
     @Override
     public void remove() {
         cursor = cursor.remove();
+        size--;
     }
 
     @Override
     public E next() {
-        E e = cursor.getNode().getElement();
+        E e = cursor.getElement();
         cursor = cursor.moveToNext();
         return e;
     }
@@ -52,6 +49,7 @@ class CustomIterator<E> implements ListIterator<E> {
     @Override
     public void add(E e) {
         cursor = cursor.add(e);
+        size++;
     }
 
     @Override
@@ -68,11 +66,29 @@ class CustomIterator<E> implements ListIterator<E> {
     @Override
     public E previous() {
         cursor = cursor.moveToPrevious();
-        return cursor.getNode().getElement();
+        return cursor.getElement();
     }
 
     @Override
     public void set(E e) {
         cursor.set(e);
+    }
+
+    public void moveAtTheBeginning() {
+        while (hasPrevious())
+            previous();
+    }
+
+    public void moveAtTheEnd() {
+        while (hasNext())
+            next();
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public void resetLastOperation() {
+        cursor.resetLastOperation();
     }
 }
