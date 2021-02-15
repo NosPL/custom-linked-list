@@ -292,9 +292,4 @@ public class CustomLinkedList<T> implements List<T> {
         }
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "CustomLinkedList";
-    }
 }
