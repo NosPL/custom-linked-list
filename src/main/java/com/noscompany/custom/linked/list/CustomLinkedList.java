@@ -281,8 +281,8 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        validateRange(fromIndex);
-        validateRange(toIndex);
+        if (fromIndex < 0 || toIndex > size() || fromIndex > toIndex)
+            throw new IndexOutOfBoundsException();
         ListIterator<T> iterator = listIterator();
         CustomLinkedList<T> result = CustomLinkedList.empty();
         while (iterator.hasNext()) {
