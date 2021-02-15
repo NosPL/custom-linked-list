@@ -117,17 +117,19 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        checkForNulls(c);
         validateRange(index);
+        checkForNulls(c);
+        boolean changed = false;
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             if (iterator.nextIndex() == index) {
                 for (T t : c)
                     iterator.add(t);
+                changed = true;
             }
-            return true;
+            iterator.next();
         }
-        return false;
+        return changed;
     }
 
     @Override
