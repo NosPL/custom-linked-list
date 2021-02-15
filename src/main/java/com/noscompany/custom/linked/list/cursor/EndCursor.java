@@ -1,7 +1,6 @@
 package com.noscompany.custom.linked.list.cursor;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
@@ -24,8 +23,7 @@ class EndCursor<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> moveToNext() {
-        Optional.empty().orElseThrow(NoSuchElementException::new);
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override

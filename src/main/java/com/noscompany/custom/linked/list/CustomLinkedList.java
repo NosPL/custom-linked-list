@@ -63,20 +63,18 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public <T1> T1[] toArray(T1[] a) {
         Objects.requireNonNull(a);
-        ListIterator<T> iterator = listIterator();
         a = (size() > a.length) ? (T1[]) new Object[size()] : a;
         int i = 0;
-        try {
-            while (iterator.hasNext())
-                a[i++] = (T1) iterator.next();
-        } catch (Exception c) {
-            throw new ArrayStoreException();
-        }
+        for (T t : this)
+            try {
+                a[i++] = (T1) t;
+            } catch (ClassCastException c) {
+                throw new ArrayStoreException();
+            }
         if (a.length > size())
             a[size()] = null;
         return a;
     }
-
 
     @Override
     public boolean add(T t) {

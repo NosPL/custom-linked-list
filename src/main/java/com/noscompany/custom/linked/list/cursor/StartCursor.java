@@ -1,7 +1,6 @@
 package com.noscompany.custom.linked.list.cursor;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
@@ -31,8 +30,7 @@ class StartCursor<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> moveToPrevious() {
-        Optional.empty().orElseThrow(NoSuchElementException::new);
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override
@@ -64,6 +62,6 @@ class StartCursor<T> extends Cursor<T> {
     @Override
     protected void validate(Node<T> node) {
         if (node.hasPrevious())
-            throw new IllegalArgumentException("Beginning cursor node cannot have previous node");
+            throw new IllegalArgumentException("Start cursor node cannot have previous node");
     }
 }

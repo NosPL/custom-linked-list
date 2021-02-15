@@ -1,7 +1,6 @@
 package com.noscompany.custom.linked.list.cursor;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.ADD;
 
@@ -23,20 +22,17 @@ class EmptyCursor<T> extends Cursor<T> {
 
     @Override
     public Cursor<T> moveToNext() {
-        Optional.empty().orElseThrow(NoSuchElementException::new);
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override
     public Cursor<T> moveToPrevious() {
-        Optional.empty().orElseThrow(NoSuchElementException::new);
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override
     public T getElement() {
-        Optional.empty().orElseThrow(NoSuchElementException::new);
-        return null;
+        throw new NoSuchElementException();
     }
 
     @Override
