@@ -36,9 +36,8 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public boolean contains(Object o) {
         Objects.requireNonNull(o);
-        ListIterator<T> iterator = listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().equals(o))
+        for (T t : this) {
+            if (t.equals(o))
                 return true;
         }
         return false;
