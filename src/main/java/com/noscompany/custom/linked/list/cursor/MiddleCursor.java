@@ -19,7 +19,7 @@ class MiddleCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveToNext() {
+    public Cursor<T> next() {
         if (node.hasNext())
             return new MiddleCursor<>(node.getNextNode(), (nextIndex + 1), NEXT);
         else
@@ -27,7 +27,7 @@ class MiddleCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveToPrevious() {
+    public Cursor<T> previous() {
         Node<T> previousNode = node.getPreviousNode();
         if (previousNode.hasPrevious())
             return new MiddleCursor<>(previousNode, (nextIndex - 1), PREVIOUS);
