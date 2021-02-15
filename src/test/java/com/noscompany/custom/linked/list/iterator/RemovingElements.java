@@ -14,7 +14,7 @@ public class RemovingElements {
     @Test
     @DisplayName("remove() on empty iterator should crash")
     public void test() {
-        ListIterator<Object> iterator = CustomLinkedList.empty().listIterator();
+        ListIterator<Object> iterator = CustomLinkedList.of().listIterator();
         assertIsEmpty(iterator);
         assertThrows(IllegalStateException.class, iterator::remove);
     }

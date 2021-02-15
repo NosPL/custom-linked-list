@@ -9,10 +9,6 @@ public class CustomLinkedList<T> implements List<T> {
         this.customIterator = customIterator;
     }
 
-    public static <T> CustomLinkedList<T> empty() {
-        return new CustomLinkedList<>(CustomIterator.empty());
-    }
-
     @SafeVarargs
     public static <T> CustomLinkedList<T> of(T... elements) {
         CustomIterator<T> iterator = CustomIterator.empty();

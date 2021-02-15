@@ -17,7 +17,7 @@ public class ContainsTest {
 
     @Test
     public void tes2() {
-        assertFalse(CustomLinkedList.empty().contains("x"));
+        assertFalse(CustomLinkedList.of().contains("x"));
     }
 
     @Test
@@ -30,7 +30,7 @@ public class ContainsTest {
 
     @Test
     public void tes4() {
-        List<String> list = CustomLinkedList.empty();
+        List<String> list = CustomLinkedList.of();
         list.add("x");
         assertTrue(list.contains("x"));
     }

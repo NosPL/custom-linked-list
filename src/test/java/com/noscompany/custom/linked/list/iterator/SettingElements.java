@@ -15,7 +15,7 @@ public class SettingElements {
     @Test
     @DisplayName("set() on empty iterator should crash")
     public void test() {
-        ListIterator<Object> iterator = CustomLinkedList.empty().listIterator();
+        ListIterator<Object> iterator = CustomLinkedList.of().listIterator();
         assertThrows(IllegalStateException.class, () -> iterator.set(new Object()));
     }
 

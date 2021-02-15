@@ -12,7 +12,7 @@ public class GetByIndexTest {
     @Test
     @DisplayName("trying to get() element from empty list should crash")
     public void test() {
-        CustomLinkedList<Object> list = CustomLinkedList.empty();
+        CustomLinkedList<Object> list = CustomLinkedList.of();
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(0));
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(1));

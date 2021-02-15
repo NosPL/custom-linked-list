@@ -12,7 +12,7 @@ public class ObjectToArrayTest {
 
     @Test
     public void test() {
-        List<Object> list = CustomLinkedList.empty();
+        List<Object> list = CustomLinkedList.of();
         Object[] array = list.toArray();
         assertEquals(0, array.length);
     }
