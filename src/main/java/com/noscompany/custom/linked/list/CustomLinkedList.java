@@ -73,6 +73,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
+        Objects.requireNonNull(t);
         customIterator.moveAtTheEnd();
         customIterator.add(t);
         return true;
@@ -80,6 +81,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
+        Objects.requireNonNull(o);
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             if (iterator.next().equals(o)) {
@@ -113,7 +115,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        validateRange(index);
+        throwOutOfBoundIf((index < 0 || index > size()));
         checkForNulls(c);
         boolean changed = false;
         ListIterator<T> iterator = listIterator();
@@ -126,6 +128,10 @@ public class CustomLinkedList<T> implements List<T> {
             iterator.next();
         }
         return changed;
+    }
+
+    private void throwOutOfBoundIf(boolean value) {
+        if (value) throw new IndexOutOfBoundsException();
     }
 
     @Override
@@ -175,7 +181,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index >= size());
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             if (iterator.nextIndex() == index)
@@ -186,15 +192,10 @@ public class CustomLinkedList<T> implements List<T> {
         throw new RuntimeException("did not found element for index: " + index);
     }
 
-    private void validateRange(int index) {
-        if (index < 0 || index >= size())
-            throw new IndexOutOfBoundsException();
-    }
-
     @Override
     public T set(int index, T element) {
+        throwOutOfBoundIf(index < 0 || index >= size());
         Objects.requireNonNull(element);
-        validateRange(index);
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
@@ -209,7 +210,7 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public void add(int index, T element) {
         Objects.requireNonNull(element);
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index > size());
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             iterator.next();
@@ -221,7 +222,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index >= size());
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
@@ -263,24 +264,19 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index > size());
         customIterator.moveAtTheBeginning();
-        while (customIterator.hasNext()) {
-            if (customIterator.nextIndex() == index) {
-                customIterator.resetLastOperation();
-                return customIterator;
-            }
+        while (customIterator.hasNext() && customIterator.nextIndex() != index)
             customIterator.next();
-        }
-        throw new RuntimeException("Could not set iterator at position: " + index);
+        customIterator.resetLastOperation();
+        return customIterator;
     }
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        if (fromIndex < 0 || toIndex > size() || fromIndex > toIndex)
-            throw new IndexOutOfBoundsException();
+        throwOutOfBoundIf(fromIndex < 0 || toIndex > size() || fromIndex > toIndex);
         ListIterator<T> iterator = listIterator();
-        CustomLinkedList<T> result = CustomLinkedList.empty();
+        CustomLinkedList<T> result = CustomLinkedList.of();
         while (iterator.hasNext()) {
             int index = iterator.nextIndex();
             if (index >= fromIndex && index < toIndex)
