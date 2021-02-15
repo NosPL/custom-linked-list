@@ -294,16 +294,6 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder().append("CustomLinkedList = [");
-        customIterator.moveAtTheBeginning();
-        while (customIterator.hasNext()) {
-            stringBuilder.append(customIterator.next());
-            if (customIterator.hasNext())
-                stringBuilder.append(", ");
-        }
-        stringBuilder.append("]");
-        customIterator.moveAtTheBeginning();
-        customIterator.resetLastOperation();
-        return stringBuilder.toString();
+        return "CustomLinkedList";
     }
 }
