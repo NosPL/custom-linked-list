@@ -141,12 +141,11 @@ public class CustomLinkedList<T> implements List<T> {
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
-            inner:
             for (Object o : c) {
                 if (next.equals(o)) {
                     iterator.remove();
                     changed = true;
-                    break inner;
+                    break;
                 }
             }
         }
