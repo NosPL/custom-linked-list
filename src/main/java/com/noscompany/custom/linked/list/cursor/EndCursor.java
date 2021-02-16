@@ -49,19 +49,6 @@ class EndCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> remove() {
-        if (lastOperation == NEXT) {
-            if (node.hasPrevious()) {
-                node = node.getPreviousNode();
-                node.removeNext();
-                return new EndCursor<>(node, (nextIndex - 1), REMOVE);
-            } else
-                return new EmptyCursor<>(REMOVE);
-        }
-        throw new IllegalStateException();
-    }
-
-    @Override
     protected Cursor<T> removeNext() {
         throw new IllegalStateException();
     }
