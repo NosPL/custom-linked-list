@@ -46,7 +46,12 @@ class EmptyCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> remove() {
+    protected Cursor<T> removeNext() {
+        throw new IllegalStateException();
+    }
+
+    @Override
+    protected Cursor<T> removePrevious() {
         throw new IllegalStateException();
     }
 

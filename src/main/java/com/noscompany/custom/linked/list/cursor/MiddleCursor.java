@@ -52,16 +52,7 @@ class MiddleCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> remove() {
-        if (lastOperation == PREVIOUS) {
-            return removeNext();
-        } else if (lastOperation == NEXT) {
-            return removePrevious();
-        } else
-            throw new IllegalStateException();
-    }
-
-    private Cursor<T> removeNext() {
+    protected Cursor<T> removeNext() {
         node = node.getPreviousNode();
         node.removeNext();
         if (node.hasNext())
@@ -70,7 +61,8 @@ class MiddleCursor<T> extends Cursor<T> {
             return new EndCursor<>(node, nextIndex, REMOVE);
     }
 
-    private Cursor<T> removePrevious() {
+    @Override
+    protected Cursor<T> removePrevious() {
         node.removePrevious();
         if (node.hasPrevious())
             return new MiddleCursor<>(node, (nextIndex - 1), REMOVE);

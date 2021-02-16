@@ -47,16 +47,18 @@ class StartCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> remove() {
-        if (lastOperation == PREVIOUS) {
-            if (node.hasNext()) {
-                node = node.getNextNode();
-                node.removePrevious();
-                return new StartCursor<>(node, REMOVE);
-            } else
-                return new EmptyCursor<>(REMOVE);
+    protected Cursor<T> removeNext() {
+        if (node.hasNext()) {
+            node = node.getNextNode();
+            node.removePrevious();
+            return new StartCursor<>(node, REMOVE);
         } else
-            throw new IllegalStateException();
+            return new EmptyCursor<>(REMOVE);
+    }
+
+    @Override
+    protected Cursor<T> removePrevious() {
+        throw new IllegalStateException();
     }
 
     @Override

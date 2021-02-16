@@ -54,11 +54,26 @@ class EndCursor<T> extends Cursor<T> {
             if (node.hasPrevious()) {
                 node = node.getPreviousNode();
                 node.removeNext();
-                new EndCursor<>(node, (nextIndex - 1), REMOVE);
+                return new EndCursor<>(node, (nextIndex - 1), REMOVE);
             } else
                 return new EmptyCursor<>(REMOVE);
         }
         throw new IllegalStateException();
+    }
+
+    @Override
+    protected Cursor<T> removeNext() {
+        throw new IllegalStateException();
+    }
+
+    @Override
+    protected Cursor<T> removePrevious() {
+        if (node.hasPrevious()) {
+            node = node.getPreviousNode();
+            node.removeNext();
+            return new EndCursor<>(node, (nextIndex - 1), REMOVE);
+        } else
+            return new EmptyCursor<>(REMOVE);
     }
 
     @Override

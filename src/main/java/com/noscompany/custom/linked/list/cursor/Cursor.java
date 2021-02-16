@@ -1,6 +1,6 @@
 package com.noscompany.custom.linked.list.cursor;
 
-import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.NONE;
+import static com.noscompany.custom.linked.list.cursor.Cursor.LastOperation.*;
 
 public abstract class Cursor<T> {
 
@@ -45,7 +45,18 @@ public abstract class Cursor<T> {
         return nextIndex;
     }
 
-    public abstract Cursor<T> remove();
+    public Cursor<T> remove() {
+        if (lastOperation == PREVIOUS) {
+            return removeNext();
+        } else if (lastOperation == NEXT) {
+            return removePrevious();
+        } else
+            throw new IllegalStateException();
+    }
+
+    protected abstract Cursor<T> removeNext();
+
+    protected abstract Cursor<T> removePrevious();
 
     protected abstract void validate(Node<T> node);
 
