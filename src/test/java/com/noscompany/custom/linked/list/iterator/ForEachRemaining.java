@@ -14,7 +14,7 @@ public class ForEachRemaining {
     @Test
     @DisplayName("'forEachRemaining(..)' should not be called once for empty iterator")
     public void test() {
-        ListIterator<Object> iterator = CustomLinkedList.empty().listIterator();
+        ListIterator<Object> iterator = CustomLinkedList.of().listIterator();
         assertIsEmpty(iterator);
         SomeClass<Object> someClass = new SomeClass<>();
         iterator.forEachRemaining(someClass::consume);

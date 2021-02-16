@@ -79,9 +79,8 @@ class Node<T> {
             return;
         else if (nextNode.hasNext()) {
             Node<T> oldNextNode = nextNode;
-            nextNode = nextNode.getNextNode();
-            nextNode.previousNode = this;
-            oldNextNode.nullifyNeighbours();
+            connectAsNext(nextNode.getNextNode());
+            oldNextNode.detach();
         } else {
             nextNode.previousNode = null;
             nextNode = null;
@@ -93,16 +92,25 @@ class Node<T> {
             return;
         else if (previousNode.hasPrevious()) {
             Node<T> oldPreviousNode = previousNode;
-            previousNode = previousNode.getPreviousNode();
-            previousNode.nextNode = this;
-            oldPreviousNode.nullifyNeighbours();
+            connectAsPrevious(previousNode.getPreviousNode());
+            oldPreviousNode.detach();
         } else {
             previousNode.nextNode = null;
             previousNode = null;
         }
     }
 
-    private void nullifyNeighbours() {
+    private void connectAsNext(Node<T> node) {
+        nextNode = node;
+        node.previousNode = this;
+    }
+
+    private void connectAsPrevious(Node<T> node) {
+        previousNode = node;
+        node.nextNode = this;
+    }
+
+    private void detach() {
         previousNode = null;
         nextNode = null;
     }

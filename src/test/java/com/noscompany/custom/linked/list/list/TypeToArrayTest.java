@@ -27,7 +27,7 @@ public class TypeToArrayTest {
 
     @Test
     public void test3() {
-        List<String> list = CustomLinkedList.empty();
+        List<String> list = CustomLinkedList.of();
         Number[] array = list.toArray(new Number[2]);
         assertEquals(2, array.length);
         assertArrayEquals(new Number[2], array);

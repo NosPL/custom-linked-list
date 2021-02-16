@@ -22,12 +22,12 @@ class EndCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveToNext() {
+    public Cursor<T> next() {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Cursor<T> moveToPrevious() {
+    public Cursor<T> previous() {
         if (node.hasPrevious())
             return new MiddleCursor<>(node, (nextIndex - 1), PREVIOUS);
         else

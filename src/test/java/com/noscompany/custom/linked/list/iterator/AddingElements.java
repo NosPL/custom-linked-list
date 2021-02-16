@@ -70,7 +70,7 @@ public class AddingElements {
     @DisplayName("adding element to empty iterator")
     public void test4() {
 //        given that there is empty iterator
-        List<String> list = CustomLinkedList.empty();
+        List<String> list = CustomLinkedList.of();
         ListIterator<String> iterator = list.listIterator();
 //        and iterator is at the beginning
         isEmpty(iterator);

@@ -13,7 +13,7 @@ public class SizeOfNewInstanceTest {
     @Test
     @DisplayName("empty() on empty list should return true and size() should return 0")
     public void test() {
-        List<Object> list = CustomLinkedList.empty();
+        List<Object> list = CustomLinkedList.of();
         assertTrue(list.isEmpty());
         assertEquals(0, list.size());
     }

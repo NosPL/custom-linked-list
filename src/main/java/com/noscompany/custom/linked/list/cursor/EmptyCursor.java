@@ -21,12 +21,12 @@ class EmptyCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveToNext() {
+    public Cursor<T> next() {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Cursor<T> moveToPrevious() {
+    public Cursor<T> previous() {
         throw new NoSuchElementException();
     }
 

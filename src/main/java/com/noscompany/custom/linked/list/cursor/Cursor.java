@@ -25,9 +25,9 @@ public abstract class Cursor<T> {
 
     public abstract boolean hasPrevious();
 
-    public abstract Cursor<T> moveToNext();
+    public abstract Cursor<T> next();
 
-    public abstract Cursor<T> moveToPrevious();
+    public abstract Cursor<T> previous();
 
     public T getElement() {
         return node.getElement();

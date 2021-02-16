@@ -42,7 +42,7 @@ class CustomIterator<E> implements ListIterator<E> {
     @Override
     public E next() {
         E e = cursor.getElement();
-        cursor = cursor.moveToNext();
+        cursor = cursor.next();
         return e;
     }
 
@@ -65,7 +65,7 @@ class CustomIterator<E> implements ListIterator<E> {
 
     @Override
     public E previous() {
-        cursor = cursor.moveToPrevious();
+        cursor = cursor.previous();
         return cursor.getElement();
     }
 

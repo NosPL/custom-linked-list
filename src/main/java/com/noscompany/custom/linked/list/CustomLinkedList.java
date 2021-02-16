@@ -9,10 +9,6 @@ public class CustomLinkedList<T> implements List<T> {
         this.customIterator = customIterator;
     }
 
-    public static <T> CustomLinkedList<T> empty() {
-        return new CustomLinkedList<>(CustomIterator.empty());
-    }
-
     @SafeVarargs
     public static <T> CustomLinkedList<T> of(T... elements) {
         CustomIterator<T> iterator = CustomIterator.empty();
@@ -36,9 +32,8 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public boolean contains(Object o) {
         Objects.requireNonNull(o);
-        ListIterator<T> iterator = listIterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().equals(o))
+        for (T t : this) {
+            if (t.equals(o))
                 return true;
         }
         return false;
@@ -78,6 +73,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
+        Objects.requireNonNull(t);
         customIterator.moveAtTheEnd();
         customIterator.add(t);
         return true;
@@ -85,6 +81,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
+        Objects.requireNonNull(o);
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             if (iterator.next().equals(o)) {
@@ -118,17 +115,23 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
+        throwOutOfBoundIf((index < 0 || index > size()));
         checkForNulls(c);
-        validateRange(index);
+        boolean changed = false;
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             if (iterator.nextIndex() == index) {
                 for (T t : c)
                     iterator.add(t);
+                changed = true;
             }
-            return true;
+            iterator.next();
         }
-        return false;
+        return changed;
+    }
+
+    private void throwOutOfBoundIf(boolean value) {
+        if (value) throw new IndexOutOfBoundsException();
     }
 
     @Override
@@ -138,12 +141,11 @@ public class CustomLinkedList<T> implements List<T> {
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
-            inner:
             for (Object o : c) {
                 if (next.equals(o)) {
                     iterator.remove();
                     changed = true;
-                    break inner;
+                    break;
                 }
             }
         }
@@ -178,7 +180,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index >= size());
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             if (iterator.nextIndex() == index)
@@ -189,15 +191,10 @@ public class CustomLinkedList<T> implements List<T> {
         throw new RuntimeException("did not found element for index: " + index);
     }
 
-    private void validateRange(int index) {
-        if (index < 0 || index >= size())
-            throw new IndexOutOfBoundsException();
-    }
-
     @Override
     public T set(int index, T element) {
+        throwOutOfBoundIf(index < 0 || index >= size());
         Objects.requireNonNull(element);
-        validateRange(index);
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
@@ -212,7 +209,7 @@ public class CustomLinkedList<T> implements List<T> {
     @Override
     public void add(int index, T element) {
         Objects.requireNonNull(element);
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index > size());
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             iterator.next();
@@ -224,7 +221,7 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index >= size());
         ListIterator<T> iterator = listIterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
@@ -266,44 +263,24 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        validateRange(index);
+        throwOutOfBoundIf(index < 0 || index > size());
         customIterator.moveAtTheBeginning();
-        while (customIterator.hasNext()) {
-            if (customIterator.nextIndex() == index) {
-                customIterator.resetLastOperation();
-                return customIterator;
-            }
+        while (customIterator.hasNext() && customIterator.nextIndex() != index)
             customIterator.next();
-        }
-        throw new RuntimeException("Could not set iterator at position: " + index);
+        customIterator.resetLastOperation();
+        return customIterator;
     }
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        validateRange(fromIndex);
-        validateRange(toIndex);
+        throwOutOfBoundIf(fromIndex < 0 || toIndex > size() || fromIndex > toIndex);
         ListIterator<T> iterator = listIterator();
-        CustomLinkedList<T> result = CustomLinkedList.empty();
+        CustomLinkedList<T> result = CustomLinkedList.of();
         while (iterator.hasNext()) {
             int index = iterator.nextIndex();
             if (index >= fromIndex && index < toIndex)
                 result.add(iterator.next());
         }
         return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder().append("CustomLinkedList = [");
-        customIterator.moveAtTheBeginning();
-        while (customIterator.hasNext()) {
-            stringBuilder.append(customIterator.next());
-            if (customIterator.hasNext())
-                stringBuilder.append(", ");
-        }
-        stringBuilder.append("]");
-        customIterator.moveAtTheBeginning();
-        customIterator.resetLastOperation();
-        return stringBuilder.toString();
     }
 }

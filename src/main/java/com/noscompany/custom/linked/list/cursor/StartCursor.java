@@ -21,7 +21,7 @@ class StartCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveToNext() {
+    public Cursor<T> next() {
         if (node.hasNext())
             return new MiddleCursor<>(node.getNextNode(), 1, NEXT);
         else
@@ -29,7 +29,7 @@ class StartCursor<T> extends Cursor<T> {
     }
 
     @Override
-    public Cursor<T> moveToPrevious() {
+    public Cursor<T> previous() {
         throw new NoSuchElementException();
     }
 

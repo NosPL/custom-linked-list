@@ -12,7 +12,7 @@ public class AddTest {
     @Test
     @DisplayName("adding element should increase list.size() by 1")
     public void test() {
-        CustomLinkedList<String> list = CustomLinkedList.empty();
+        CustomLinkedList<String> list = CustomLinkedList.of();
         assertTrue(list.isEmpty());
         list.add("x");
         assertEquals(1, list.size());
